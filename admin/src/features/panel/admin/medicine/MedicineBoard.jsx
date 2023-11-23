@@ -1,35 +1,44 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useMemo } from "react";
 import { Medicine } from "./Medicine";
-import { medicinesMock } from "../../mocks/medicines";
+import { medicinesMock, MEDS_PER_PAGE } from "../../mocks/medicines";
+import { Pagination } from "./Pagination";
 
 export const MedicineBoard = () => {
-    const [isCheckAll, setIsCheckAll] = useState(false)
-    const [medicines, setMedicines] = useState([])
-    const [selectedMedicines, setSelectedMedicines] = useState([])
+  const [isCheckAll, setIsCheckAll] = useState(false);
+  const [medicines, setMedicines] = useState([]);
+  const [selectedMedicines, setSelectedMedicines] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-    const handleCheckAll = () => {
-        if (isCheckAll) {
-            setSelectedMedicines([])
-        }
-        else {
-            setSelectedMedicines(medicines.map((medicine) => medicine.id))
-        }
+  const currentMeds = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * MEDS_PER_PAGE;
+    const lastPageIndex = firstPageIndex + MEDS_PER_PAGE;
+    return medicinesMock.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, medicinesMock]);
 
-        setIsCheckAll(!isCheckAll)
+  const handleCheckAll = () => {
+    if (isCheckAll) {
+      setSelectedMedicines([]);
+    } else {
+      setSelectedMedicines(medicines.map((medicine) => medicine.id));
     }
 
-    const handleCheck = (id) => {
-        if (selectedMedicines.includes(id)) {
-            setSelectedMedicines(selectedMedicines.filter((medicineId) => medicineId !== id))
-        } else {
-            setSelectedMedicines([...selectedMedicines, id])
-        }
-    }
+    setIsCheckAll(!isCheckAll);
+  };
 
-    // load data
-    useEffect(() => {
-        setMedicines(medicinesMock)
-    }, [medicines])
+  const handleCheck = (id) => {
+    if (selectedMedicines.includes(id)) {
+      setSelectedMedicines(
+        selectedMedicines.filter((medicineId) => medicineId !== id),
+      );
+    } else {
+      setSelectedMedicines([...selectedMedicines, id]);
+    }
+  };
+
+  // load data
+  useEffect(() => {
+    setMedicines(medicinesMock);
+  }, [medicines]);
 
   return (
     <Fragment>
@@ -51,11 +60,24 @@ export const MedicineBoard = () => {
         <p className="w-[10%] text-center">Số lượng tồn kho</p>
       </div>
 
-     {/* TODO: Add pagination */}
-      <div className="table w-full overflow-y-auto h">
-        {medicines.map((medicine) => (
-          <Medicine key={medicine.id} medicine={medicine} handleCheck={handleCheck} selected={selectedMedicines.includes(medicine.id)} />
+      {/* TODO: Add pagination */}
+      <div className="h table w-full overflow-y-auto">
+        {currentMeds.map((medicine) => (
+          <Medicine
+            key={medicine.id}
+            medicine={medicine}
+            handleCheck={handleCheck}
+            selected={selectedMedicines.includes(medicine.id)}
+          />
         ))}
+        <div className="pagination__wrapper">
+          <Pagination
+            totalItems={medicinesMock.flat().length}
+            itemsPerPage={MEDS_PER_PAGE}
+            currentPage={currentPage}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        </div>
       </div>
     </Fragment>
   );
