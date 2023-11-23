@@ -68,7 +68,7 @@ function LoginForm() {
                     </div>
                     <div className="ml-3 text-sm">
                       <label htmlFor="remember" className="text-cyan-900">
-                        Remember me
+                        Ghi nhớ đăng nhập
                       </label>
                     </div>
                   </div>
@@ -76,7 +76,7 @@ function LoginForm() {
                     href="#"
                     className="text-sm font-medium text-cyan-900 hover:underline"
                   >
-                    Forgot password?
+                    Quên mật khẩu?
                   </a>
                 </div>
                 <button
@@ -84,7 +84,7 @@ function LoginForm() {
                   className="focus:ring-primary-300 w-full rounded-lg bg-sky-300 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-4"
                   // className=""
                 >
-                  Sign in
+                  Đăng nhập
                 </button>
               </form>
             </div>
