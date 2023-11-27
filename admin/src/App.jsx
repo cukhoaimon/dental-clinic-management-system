@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import PageNotFound from "./pages/PageNotFound";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
@@ -35,7 +36,7 @@ function App() {
           </Route>
 
           <Route path="/" element={<Home />} />
-
+          <Route path="/login" element={<Login />} />
           {/* Another route add from here */}
 
           {/* All invalid route will render PageNotFound page */}
