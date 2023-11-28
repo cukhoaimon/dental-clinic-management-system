@@ -1,6 +1,8 @@
 import { Fragment, useEffect, useState } from 'react'
 import { ItemSide } from './ItemSide'
 import { MedicineBoard } from './admin/medicine/MedicineBoard'
+import Dialog from '../common/Dialog'
+import useProcessDialog from '../../hooks/useProcessDialog'
 import { sideDataMock } from './mocks/sideData'
 
 export const Panel = () => {
@@ -24,6 +26,18 @@ export const Panel = () => {
     useEffect(() => {
         setSideData(sideDataMock)
     }, [sideData])
+    
+    // handle dialog
+    const [openDialog, setOpenDialog] = useState(false)
+
+    const attr = useProcessDialog({
+        id: 'test',
+        title: 'test',
+        triggerValue: openDialog,
+        onClose: () => {
+          setOpenDialog(false)
+        },
+      })
 
   return (
     <Fragment>
@@ -54,7 +68,10 @@ export const Panel = () => {
                         <p className='text-sky-600 text-center w-full leading-8'>Table #1</p>
                     </div>
                     <div>
-                        <button className='h-8 rounded-md text-sky-600 leading-8 bg-sky-200 w-20 mr-8'>+ Thêm</button>
+                        <button className='h-8 rounded-md text-sky-600 leading-8 bg-sky-200 w-20 mr-8' onClick={()=>setOpenDialog(true)}>+ Thêm</button>
+                        <Dialog title={'Test dialog'} attr={attr}>
+                            <h1>the quick brown fox jumps over the lazy dog</h1>
+                        </Dialog>
                         <button className='h-8 rounded-md text-sky-600 leading-8 bg-sky-200 w-20 mr-8'>- Xoá</button>
                         <button className='h-8 rounded-md text-sky-600 leading-8 bg-sky-200 w-20'>? Sửa</button>
                     </div>
