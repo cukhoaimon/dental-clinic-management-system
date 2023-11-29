@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { ItemSide } from "./ItemSide";
 import { MedicineBoard } from "./admin/medicine/MedicineBoard";
-import Dialog from "../common/Dialog";
+
 import useProcessDialog from "../../hooks/useProcessDialog";
 import { sideDataMock } from "./mocks/sideData";
 
@@ -117,14 +117,12 @@ export const Panel = () => {
                 ? Sửa
               </button>
 
-              <Dialog title={diaLogName} attr={attr}>
-                <h1>the quick brown fox jumps over the lazy dog</h1>
-              </Dialog>
+              
             </div>
           </div>
 
           <div className="main-content w-full px-10 py-5">
-            <MedicineBoard />
+            <MedicineBoard attr={attr} diaLogName={diaLogName}/>
           </div>
         </div>
       </div>

@@ -2,8 +2,10 @@ import { Fragment, useEffect, useState, useMemo } from "react";
 import { Medicine } from "./Medicine";
 import { medicinesMock, MEDS_PER_PAGE } from "../../mocks/medicines";
 import { Pagination } from "./Pagination";
+import Dialog from "../../../common/Dialog";
 
-export const MedicineBoard = () => {
+/* eslint-disable react/prop-types */
+export const MedicineBoard = ({attr, diaLogName}) => {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [medicines, setMedicines] = useState([]);
   const [selectedMedicines, setSelectedMedicines] = useState([]);
@@ -42,6 +44,10 @@ export const MedicineBoard = () => {
 
   return (
     <Fragment>
+      <Dialog title={diaLogName} attr={attr}>
+        <h1>the quick brown fox jumps over the lazy dog</h1>
+      </Dialog>
+      
       <div className="nav-table flex h-12 items-center rounded-tl-xl rounded-tr-xl bg-gray-400 px-4">
         <input
           onChange={handleCheckAll}
