@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState, useMemo } from "react";
 import { Medicine } from "./Medicine";
-import { medicinesMock, MEDS_PER_PAGE } from "../../mocks/medicines";
 import { Pagination } from "./Pagination";
+import { medicinesMock, MEDS_PER_PAGE } from "../../mocks/medicines";
 import Dialog from "../../../common/Dialog";
 
 /* eslint-disable react/prop-types */
@@ -79,7 +79,7 @@ export const MedicineBoard = ({attr, diaLogName}) => {
         <div className="pagination__wrapper">
           <Pagination
             totalItems={medicinesMock.flat().length}
-            itemsPerPage={MEDS_PER_PAGE}
+            itemsPerPage={MEDS_PER_PAGE}  
             currentPage={currentPage}
             onPageChange={(page) => setCurrentPage(page)}
           />
