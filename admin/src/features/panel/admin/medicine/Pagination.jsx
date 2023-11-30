@@ -14,7 +14,7 @@ export const Pagination = ({
 
   useLayoutEffect(() => {
     setCurrentPage(externalCurrentPage)
-    console.log(externalCurrentPage)
+    // console.log(externalCurrentPage)
   }, [externalCurrentPage])
 
   const handlePageClick = (event) => {

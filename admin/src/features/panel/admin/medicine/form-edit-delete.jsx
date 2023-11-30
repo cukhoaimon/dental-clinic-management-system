@@ -1,24 +1,63 @@
-// import { useForm } from "react-hook-form";
+import { useState, useLayoutEffect } from "react";
+/* eslint-disable react/prop-types */
 
-export default function FormED() {
-  //   const {
-  //     register,
-  //     handleSubmit,
-  //     watch,
-  //     // formState: { errors },
-  //   } = useForm();
+export default function FormED({ editedMedicine }) {
+  
+  const defaultFormValues = {
+    name: "",
+    usage: "",
+  };
+  const [formValues, setFormValues] = useState(defaultFormValues);
 
-  //   const onSubmit = (data) => console.log(data);
-  //   console.log(watch("phone")); // watch input value by passing the name of it
+  useLayoutEffect(() => {
+    if (editedMedicine) {
+      setFormValues(editedMedicine);
+    } else {
+      setFormValues(defaultFormValues);
+    }
 
+    return () => {
+      setFormValues(defaultFormValues);
+    };
+  }, [editedMedicine]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  
   return (
     <>
-      <form action="">
+      <form>
         <div>
-            <label htmlFor="" className="block">
-                Mã thuốc
-            </label>
-            <input type="text" value={"dsadasdsa"} className=" border-2"/>
+          <label htmlFor="name" className="block">
+            Tên thuốc
+          </label>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            className=" border-2"
+            value={formValues.name}
+            onChange={(e)=>handleChange(e)}
+          />
+        </div>
+        <div>
+          <label htmlFor="usage" className="block">
+            Chỉ định
+          </label>
+          <input
+            id="usage"
+            type="text"
+            name="usage"
+            className=" border-2"
+            value={formValues.usage}
+            onChange={(e)=>handleChange(e)}
+          />
         </div>
       </form>
     </>

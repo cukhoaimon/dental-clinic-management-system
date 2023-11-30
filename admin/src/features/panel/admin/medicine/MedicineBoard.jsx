@@ -2,10 +2,12 @@ import { Fragment, useEffect, useState, useMemo } from "react";
 import { Medicine } from "./Medicine";
 import { Pagination } from "./Pagination";
 import { medicinesMock, MEDS_PER_PAGE } from "../../mocks/medicines";
+import FormED from "./form-edit-delete";
 import Dialog from "../../../common/Dialog";
+import useProcessDialog from "../../../../hooks/useProcessDialog";
 
 /* eslint-disable react/prop-types */
-export const MedicineBoard = ({attr, diaLogName}) => {
+export const MedicineBoard = ({ attr, diaLogName }) => {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [medicines, setMedicines] = useState([]);
   const [selectedMedicines, setSelectedMedicines] = useState([]);
@@ -42,12 +44,41 @@ export const MedicineBoard = ({attr, diaLogName}) => {
     setMedicines(medicinesMock);
   }, [medicines]);
 
+  // handle dialog edit
+  const [openDialogEdit, setOpenDialogEdit] = useState(false);
+  const [editedMedicine, setEditedMedicine] = useState(null);
+
+  const attr1 = useProcessDialog({
+    id: "editMedicine",
+    title: "Chỉnh sửa thuốc",
+    triggerValue: openDialogEdit,
+    onClose: () => {
+      setEditedMedicine(null);
+      // setShouldFocusInput(false)
+      setOpenDialogEdit(false);
+    },
+  });
+
+  const handlePopUpEdit = (id) => {
+    // console.log(id);
+    // console.log(medicines)
+    const res = medicines.find((medicine) => medicine.id === id);
+    
+    setEditedMedicine(res);
+    // console.log(editedMedicine);
+    setOpenDialogEdit(true);
+  };
+
   return (
     <Fragment>
       <Dialog title={diaLogName} attr={attr}>
         <h1>the quick brown fox jumps over the lazy dog</h1>
       </Dialog>
-      
+
+      <Dialog title={"Chỉnh sửa thuốc"} attr={attr1}>
+        <FormED editedMedicine={editedMedicine} />
+      </Dialog>
+
       <div className="nav-table flex h-12 items-center rounded-tl-xl rounded-tr-xl bg-gray-400 px-4">
         <input
           onChange={handleCheckAll}
@@ -66,7 +97,6 @@ export const MedicineBoard = ({attr, diaLogName}) => {
         <p className="w-[10%] text-center">Số lượng tồn kho</p>
       </div>
 
-      {/* TODO: Add pagination */}
       <div className="h table w-full overflow-y-auto">
         {currentMeds.map((medicine) => (
           <Medicine
@@ -74,12 +104,13 @@ export const MedicineBoard = ({attr, diaLogName}) => {
             medicine={medicine}
             handleCheck={handleCheck}
             selected={selectedMedicines.includes(medicine.id)}
+            handlePopUpEdit={handlePopUpEdit}
           />
         ))}
         <div className="pagination__wrapper">
           <Pagination
             totalItems={medicinesMock.flat().length}
-            itemsPerPage={MEDS_PER_PAGE}  
+            itemsPerPage={MEDS_PER_PAGE}
             currentPage={currentPage}
             onPageChange={(page) => setCurrentPage(page)}
           />
