@@ -1,10 +1,10 @@
-import LoginForm from "./features/authentication/LoginForm";
-import SignupForm from "./features/authentication/SignupForm";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
 export default function App() {
   return (
     <div>
-      <SignupForm />
+      <SignUp />
     </div>
   );
 }
