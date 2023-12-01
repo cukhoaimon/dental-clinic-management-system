@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, useMemo } from "react";
+import { Fragment, useState, useMemo } from "react";
 import { Medicine } from "./Medicine";
 import { Pagination } from "./Pagination";
 import { medicinesMock, MEDS_PER_PAGE } from "../../mocks/medicines";
@@ -9,15 +9,15 @@ import useProcessDialog from "../../../../hooks/useProcessDialog";
 /* eslint-disable react/prop-types */
 export const MedicineBoard = ({ attr, diaLogName }) => {
   const [isCheckAll, setIsCheckAll] = useState(false);
-  const [medicines, setMedicines] = useState([]);
+  const [medicines, setMedicines] = useState(medicinesMock);
   const [selectedMedicines, setSelectedMedicines] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const currentMeds = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * MEDS_PER_PAGE;
     const lastPageIndex = firstPageIndex + MEDS_PER_PAGE;
-    return medicinesMock.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, medicinesMock]);
+    return medicines.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, medicines]);
 
   const handleCheckAll = () => {
     if (isCheckAll) {
@@ -40,19 +40,40 @@ export const MedicineBoard = ({ attr, diaLogName }) => {
   };
 
   // load data
-  useEffect(() => {
-    setMedicines(medicinesMock);
-  }, [medicines]);
+  // useEffect(() => {
+  //   setMedicines(medicinesMock);
+  // }, [medicines]);
 
-  const submitEdit = (newValues) => {
+  // Handle submit edit
+  const handleEdit = (newValues) => {
+    setMedicines((preMed) => preMed.map((medicine) => medicine.id === newValues.id ? newValues : medicine));
+  }
+
+  const handleDelete = (id) => {
+    setMedicines((preMed) => preMed.filter((medicine) => medicine.id !== id));
+  }
+
+  const submitEdit = (newValues, formState) => {
     // e.preventDefault();
 
-    currentMeds.find((medicine) => medicine.id === newValues.id).name = newValues.name;
-    currentMeds.find((medicine) => medicine.id === newValues.id).usage = newValues.usage;
-    currentMeds.find((medicine) => medicine.id === newValues.id).price = newValues.price;
-    currentMeds.find((medicine) => medicine.id === newValues.id).unit = newValues.unit;
-    currentMeds.find((medicine) => medicine.id === newValues.id).expDay = newValues.expDay;
-    currentMeds.find((medicine) => medicine.id === newValues.id).inventoryQuantity = newValues.inventoryQuantity;    
+    // currentMeds.find((medicine) => medicine.id === newValues.id).name = newValues.name;
+    // currentMeds.find((medicine) => medicine.id === newValues.id).usage = newValues.usage;
+    // currentMeds.find((medicine) => medicine.id === newValues.id).price = newValues.price;
+    // currentMeds.find((medicine) => medicine.id === newValues.id).unit = newValues.unit;
+    // currentMeds.find((medicine) => medicine.id === newValues.id).expDay = newValues.expDay;
+    // currentMeds.find((medicine) => medicine.id === newValues.id).inventoryQuantity = newValues.inventoryQuantity;    
+
+    console.log(newValues)
+
+    if (formState === "edit") {
+      handleEdit(newValues);
+    }
+    else {
+      handleDelete(newValues.id);
+    }
+    // setMedicines(preMed => preMed.filter(medicine => medicine.id !== newValues.id));
+    
+    
     
     setOpenDialogEdit(false);
     // console.log("submit edit", newValues);
@@ -74,8 +95,6 @@ export const MedicineBoard = ({ attr, diaLogName }) => {
   });
 
   const handlePopUpEdit = (id) => {
-    // console.log(id);
-    // console.log(medicines)
     const res = medicines.find((medicine) => medicine.id === id);
     
     setEditedMedicine(res);
@@ -123,7 +142,7 @@ export const MedicineBoard = ({ attr, diaLogName }) => {
         ))}
         <div className="pagination__wrapper">
           <Pagination
-            totalItems={medicinesMock.flat().length}
+            totalItems={medicines.flat().length}
             itemsPerPage={MEDS_PER_PAGE}
             currentPage={currentPage}
             onPageChange={(page) => setCurrentPage(page)}

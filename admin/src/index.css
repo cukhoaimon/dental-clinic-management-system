@@ -6,6 +6,10 @@
   @apply bg-sky-300 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded;
 }
 
+.btn-delete {
+  @apply bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded;
+}
+
 .form-group {
   @apply mb-2;
 }

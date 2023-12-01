@@ -7,6 +7,7 @@ export default function FormED({ editedMedicine, submitEdit }) {
     usage: "",
   };
   const [formValues, setFormValues] = useState(defaultFormValues);
+  const [formState, setFormState] = useState(null);
 
   useLayoutEffect(() => {
     if (editedMedicine) {
@@ -14,7 +15,7 @@ export default function FormED({ editedMedicine, submitEdit }) {
     } else {
       setFormValues(defaultFormValues);
     }
-
+    setFormState(null);
     return () => {
       setFormValues(defaultFormValues);
     };
@@ -33,8 +34,8 @@ export default function FormED({ editedMedicine, submitEdit }) {
     <>
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          submitEdit?.(formValues);
+          e.preventDefault();
+          submitEdit?.(formValues, formState);
           setFormValues(defaultFormValues);
         }}
         className="min-w-[300px]"
@@ -47,6 +48,7 @@ export default function FormED({ editedMedicine, submitEdit }) {
             id="name"
             type="text"
             name="name"
+            disabled={formState !== "edit"}
             className=" input-field"
             value={formValues.name}
             onChange={(e) => handleChange(e)}
@@ -60,13 +62,54 @@ export default function FormED({ editedMedicine, submitEdit }) {
             id="usage"
             type="text"
             name="usage"
+            disabled={formState !== "edit"}
             className=" input-field"
             value={formValues.usage}
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <div className="pt-4 inline-flex items-end w-full flex-col">
-          <button type="submit" className="btn">Lưu</button>
+        <div className="inline-flex w-full flex-row justify-end pt-4">
+          {/* <button type="submit" className="btn">Lưu</button> */}
+          {formState === null && (
+            <>
+              <button className="btn" onClick={() => setFormState("edit")}>
+                Chỉnh sửa
+              </button>
+              <button className="btn ml-2" onClick={()=> setFormState("delete")}>Xoá</button>
+            </>
+          )}
+          {formState === "edit" && (
+            <>
+              <button
+                className="btn ml-2"
+                onClick={() => {
+                  setFormState(null);
+                  setFormValues(editedMedicine);
+                }}
+              >
+                Huỷ
+              </button>
+              <button type="submit" className="btn ml-2">
+                Lưu
+              </button>
+            </>
+          )}
+          {formState === "delete" && (
+            <>
+              <button
+                className="btn ml-2"
+                onClick={() => {
+                  setFormState(null);
+                }}
+              >
+                Huỷ
+              </button>
+              <button type="submit" className="btn-delete ml-2">
+                Xoá
+              </button>
+            </>
+          )}
+          
         </div>
       </form>
     </>
