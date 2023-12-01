@@ -1,5 +1,9 @@
 import Footer from "../../ui/Footer";
+import { useForm } from "react-hook-form";
 function LoginForm() {
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data) => console.log(data);
+
   // Todo
   return (
     <div className="container-2xl flex h-screen items-center bg-neutral-200  ">
@@ -10,19 +14,24 @@ function LoginForm() {
         <div className=" mb-10 text-center text-base font-normal text-cyan-900">
           Trở thành người đẹp trai nhất vũ trụ bằng việc đi khám răng nào!
         </div>
-        <form className="flex  flex-col items-center gap-6">
+        <form
+          className="flex  flex-col items-center gap-6"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <input
             type="phone"
             id="phone"
             className="h-[45px] w-[300px] rounded-[10px] bg-cyan-900 p-5 text-white"
             placeholder="Số điện thoại"
             required="true"
+            {...register("phone", { required: true })}
           />
           <input
             type="password"
             className="h-[45px] w-[300px] rounded-[10px] bg-cyan-900 p-5 text-white"
             placeholder="Mật khẩu"
             required="true"
+            {...register("password", { required: true })}
           />
           <div className="flex w-[300px] justify-around ">
             <div className="flex items-start gap-2">

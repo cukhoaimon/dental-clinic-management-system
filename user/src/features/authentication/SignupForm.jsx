@@ -1,6 +1,9 @@
 import Footer from "../../ui/Footer";
+import { useForm } from "react-hook-form";
 
 function SignupForm() {
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data) => console.log(data);
   // Todo
   return (
     <div className="container-2xl flex h-screen items-center bg-neutral-200">
@@ -8,13 +11,17 @@ function SignupForm() {
         <div className=" mb-10 text-center text-[64px] font-medium leading-tight text-cyan-900">
           Đăng kí tài khoản
         </div>
-        <form className="flex  flex-col items-center gap-6">
+        <form
+          className="flex  flex-col items-center gap-6"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <input
             type="phone"
             id="phone"
             className="h-[45px] w-[300px] rounded-[10px] bg-cyan-900 p-5 text-white"
             placeholder="Số điện thoại"
             required="true"
+            {...register("phone", { required: true })}
           />
           <input
             type="password"
@@ -22,6 +29,7 @@ function SignupForm() {
             className="h-[45px] w-[300px] rounded-[10px] bg-cyan-900 p-5 text-white"
             placeholder="Mật khẩu"
             required="true"
+            {...register("password", { required: true })}
           />
           <input
             type="text"
@@ -29,6 +37,7 @@ function SignupForm() {
             className="h-[45px] w-[300px] rounded-[10px] bg-cyan-900 p-5 text-white"
             placeholder="Họ và tên"
             required="true"
+            {...register("name", { required: true })}
           />
           <input
             type="date"
@@ -36,6 +45,7 @@ function SignupForm() {
             className="h-[45px] w-[300px] rounded-[10px] bg-cyan-900 p-5 text-white"
             placeholder="Ngày tháng năm sinh"
             required="true"
+            {...register("dob", { required: true })}
           />
           <input
             type="text"
@@ -43,6 +53,7 @@ function SignupForm() {
             className="h-[45px] w-[300px] rounded-[10px] bg-cyan-900 p-5 text-white"
             placeholder="Địa chỉ"
             required="true"
+            {...register("address", { required: true })}
           />
           <button className="h-[45px] w-[300px] rounded-[10px] bg-emerald-400 shadow hover:opacity-90">
             <span className=" text-center text-base font-medium   text-cyan-900">
