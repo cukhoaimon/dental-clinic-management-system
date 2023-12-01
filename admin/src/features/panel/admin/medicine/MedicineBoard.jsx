@@ -44,6 +44,20 @@ export const MedicineBoard = ({ attr, diaLogName }) => {
     setMedicines(medicinesMock);
   }, [medicines]);
 
+  const submitEdit = (newValues) => {
+    // e.preventDefault();
+
+    currentMeds.find((medicine) => medicine.id === newValues.id).name = newValues.name;
+    currentMeds.find((medicine) => medicine.id === newValues.id).usage = newValues.usage;
+    currentMeds.find((medicine) => medicine.id === newValues.id).price = newValues.price;
+    currentMeds.find((medicine) => medicine.id === newValues.id).unit = newValues.unit;
+    currentMeds.find((medicine) => medicine.id === newValues.id).expDay = newValues.expDay;
+    currentMeds.find((medicine) => medicine.id === newValues.id).inventoryQuantity = newValues.inventoryQuantity;    
+    
+    setOpenDialogEdit(false);
+    // console.log("submit edit", newValues);
+  };
+
   // handle dialog edit
   const [openDialogEdit, setOpenDialogEdit] = useState(false);
   const [editedMedicine, setEditedMedicine] = useState(null);
@@ -76,7 +90,7 @@ export const MedicineBoard = ({ attr, diaLogName }) => {
       </Dialog>
 
       <Dialog title={"Chỉnh sửa thuốc"} attr={attr1}>
-        <FormED editedMedicine={editedMedicine} />
+        <FormED editedMedicine={editedMedicine} submitEdit={submitEdit}/>
       </Dialog>
 
       <div className="nav-table flex h-12 items-center rounded-tl-xl rounded-tr-xl bg-gray-400 px-4">
