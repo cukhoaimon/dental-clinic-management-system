@@ -7,7 +7,7 @@ import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
 
 /* eslint-disable react/prop-types */
-export const MedicineBoard = ({ attr, diaLogName }) => {
+export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [medicines, setMedicines] = useState([]);
@@ -46,37 +46,34 @@ export const MedicineBoard = ({ attr, diaLogName }) => {
     setIsLoaded(true);
   }, [medicines]);
 
-  // Handle submit edit
-  const handleEdit = (newValues) => {
-    setMedicines((preMed) => preMed.map((medicine) => medicine.id === newValues.id ? newValues : medicine));
-  }
+  // Handle delete selected
+  const deleteSelected = () => {
+    setOpenDialog(false);
+    if (!selectedMedicines) return;
+    selectedMedicines.forEach((med) => handleDelete(med));
+  };
 
+  // Handle submit edit 1
+  const handleEdit = (newValues) => {
+    setMedicines((preMed) =>
+      preMed.map((medicine) =>
+        medicine.id === newValues.id ? newValues : medicine,
+      ),
+    );
+  };
+
+  // Handle submit delete 1
   const handleDelete = (id) => {
     setMedicines((preMed) => preMed.filter((medicine) => medicine.id !== id));
-  }
+  };
 
   const submitEdit = (newValues, formState) => {
-    // e.preventDefault();
-
-    // currentMeds.find((medicine) => medicine.id === newValues.id).name = newValues.name;
-    // currentMeds.find((medicine) => medicine.id === newValues.id).usage = newValues.usage;
-    // currentMeds.find((medicine) => medicine.id === newValues.id).price = newValues.price;
-    // currentMeds.find((medicine) => medicine.id === newValues.id).unit = newValues.unit;
-    // currentMeds.find((medicine) => medicine.id === newValues.id).expDay = newValues.expDay;
-    // currentMeds.find((medicine) => medicine.id === newValues.id).inventoryQuantity = newValues.inventoryQuantity;    
-
-    console.log(newValues)
-
     if (formState === "edit") {
       handleEdit(newValues);
-    }
-    else {
+    } else {
       handleDelete(newValues.id);
     }
-    // setMedicines(preMed => preMed.filter(medicine => medicine.id !== newValues.id));
-    
-    
-    
+
     setOpenDialogEdit(false);
     // console.log("submit edit", newValues);
   };
@@ -91,27 +88,53 @@ export const MedicineBoard = ({ attr, diaLogName }) => {
     triggerValue: openDialogEdit,
     onClose: () => {
       setEditedMedicine(null);
-      // setShouldFocusInput(false)
+
       setOpenDialogEdit(false);
     },
   });
 
   const handlePopUpEdit = (id) => {
     const res = medicines.find((medicine) => medicine.id === id);
-    
+
     setEditedMedicine(res);
-    // console.log(editedMedicine);
+
     setOpenDialogEdit(true);
   };
 
   return (
     <Fragment>
+      {/* Dialog top */}
       <Dialog title={diaLogName} attr={attr}>
-        <h1>the quick brown fox jumps over the lazy dog</h1>
+        {diaLogName === "Xoá" ? (
+          <>
+            <p>Xoá các thuốc đã chọn?</p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                deleteSelected();
+              }}
+            >
+              <div className="inline-flex w-full justify-end pt-4">
+                <button
+                  className="btn"
+                  onClick={() => {
+                    setOpenDialog(false);
+                  }}
+                >
+                  Huỷ
+                </button>
+                <button className="btn-delete ml-2" type="submit">
+                  Xoá
+                </button>
+              </div>
+            </form>
+          </>
+        ) : null}
       </Dialog>
 
+      {/* Dialog lines */}
       <Dialog title={"Chỉnh sửa thuốc"} attr={attr1}>
-        <FormED editedMedicine={editedMedicine} submitEdit={submitEdit}/>
+        <FormED editedMedicine={editedMedicine} submitEdit={submitEdit} />
       </Dialog>
 
       <div className="nav-table flex h-12 items-center rounded-tl-xl rounded-tr-xl bg-gray-400 px-4">

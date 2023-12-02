@@ -69,11 +69,10 @@ export default function FormED({ editedMedicine, submitEdit }) {
           />
         </div>
         <div className="inline-flex w-full flex-row justify-end pt-4">
-          {/* <button type="submit" className="btn">Lưu</button> */}
           {formState === null && (
             <>
               <button className="btn" onClick={() => setFormState("edit")}>
-                Chỉnh sửa
+                Sửa
               </button>
               <button className="btn ml-2" onClick={()=> setFormState("delete")}>Xoá</button>
             </>

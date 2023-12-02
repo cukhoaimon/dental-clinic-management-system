@@ -101,28 +101,24 @@ export const Panel = () => {
                 + Thêm
               </button>
 
-              <button className="mr-8 h-8 w-20 rounded-md bg-sky-200 leading-8 text-sky-600"
-              onClick={() => {
-                setOpenDialog(true);
-                setDialogName("Xoá");
-              }}>
+              <button
+                className="mr-8 h-8 w-20 rounded-md bg-sky-200 leading-8 text-sky-600"
+                onClick={() => {
+                  setOpenDialog(true);
+                  setDialogName("Xoá");
+                }}
+              >
                 - Xoá
               </button>
-
-              <button className="h-8 w-20 rounded-md bg-sky-200 leading-8 text-sky-600"
-              onClick={() => {
-                setOpenDialog(true);
-                setDialogName("Sửa");
-              }}>
-                ? Sửa
-              </button>
-
-              
             </div>
           </div>
 
           <div className="main-content w-full px-10 py-5">
-            <MedicineBoard attr={attr} diaLogName={diaLogName}/>
+            <MedicineBoard
+              setOpenDialog={setOpenDialog}
+              attr={attr}
+              diaLogName={diaLogName}
+            />
           </div>
         </div>
       </div>
