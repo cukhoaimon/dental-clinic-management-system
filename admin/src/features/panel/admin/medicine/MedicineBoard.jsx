@@ -3,6 +3,7 @@ import { Medicine } from "./Medicine";
 import { Pagination } from "./Pagination";
 import { medicinesMock, MEDS_PER_PAGE } from "../../mocks/medicines";
 import FormED from "./form-edit-delete";
+import FormAdd from "./form-add";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
 
@@ -129,7 +130,7 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
               </div>
             </form>
           </>
-        ) : null}
+        ) : <FormAdd/>}
       </Dialog>
 
       {/* Dialog lines */}

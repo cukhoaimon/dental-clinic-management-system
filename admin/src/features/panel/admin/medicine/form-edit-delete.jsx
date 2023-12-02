@@ -15,9 +15,10 @@ export default function FormED({ editedMedicine, submitEdit }) {
     } else {
       setFormValues(defaultFormValues);
     }
+
     setFormState(null);
     return () => {
-      setFormValues(defaultFormValues);
+      setFormValues(editedMedicine);
     };
   }, [editedMedicine]);
 
