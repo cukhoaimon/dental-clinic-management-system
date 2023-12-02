@@ -1,4 +1,4 @@
-import { Fragment, useState, useMemo } from "react";
+import { Fragment, useState, useMemo, useEffect } from "react";
 import { Medicine } from "./Medicine";
 import { Pagination } from "./Pagination";
 import { medicinesMock, MEDS_PER_PAGE } from "../../mocks/medicines";
@@ -9,6 +9,7 @@ import useProcessDialog from "../../../../hooks/useProcessDialog";
 /* eslint-disable react/prop-types */
 export const MedicineBoard = ({ attr, diaLogName }) => {
   const [isCheckAll, setIsCheckAll] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [medicines, setMedicines] = useState(medicinesMock);
   const [selectedMedicines, setSelectedMedicines] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,9 +41,10 @@ export const MedicineBoard = ({ attr, diaLogName }) => {
   };
 
   // load data
-  // useEffect(() => {
-  //   setMedicines(medicinesMock);
-  // }, [medicines]);
+  useEffect(() => {
+    setMedicines(isLoaded ? medicines : medicinesMock);
+    setIsLoaded(true);
+  }, [medicines]);
 
   // Handle submit edit
   const handleEdit = (newValues) => {
