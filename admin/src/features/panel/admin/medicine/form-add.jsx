@@ -5,6 +5,10 @@ export default function FormAdd({ submitAdd }) {
   const defaultFormValues = {
     name: "",
     usage: "",
+    price: "",
+    unit: "",
+    expDay: "",
+    inventoryQuantity: "",
   };
   const [formValues, setFormValues] = useState(defaultFormValues);
 
@@ -20,7 +24,7 @@ export default function FormAdd({ submitAdd }) {
       return false;
     }
     return true;
-  }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,6 +70,50 @@ export default function FormAdd({ submitAdd }) {
             name="usage"
             className=" input-field"
             value={formValues.usage}
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="price">Giá (VNĐ)</label>
+          <input
+            id="price"
+            type="text"
+            name="price"
+            className=" input-field"
+            value={formValues.price}
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="unit">Đơn vị tính</label>
+          <input
+            id="unit"
+            type="text"
+            name="unit"
+            className="input-field"
+            value={formValues.unit}
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="expDay">Ngày hết hạn</label>
+          <input
+            id="expDay"
+            type="text"
+            name="expDay"
+            className="input-field"
+            value={formValues.expDay}
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="expDay">Số lượng tồn kho</label>
+          <input
+            id="inventoryQuantity"
+            type="text"
+            name="inventoryQuantity"
+            className="input-field"
+            value={formValues.inventoryQuantity}
             onChange={(e) => handleChange(e)}
           />
         </div>
