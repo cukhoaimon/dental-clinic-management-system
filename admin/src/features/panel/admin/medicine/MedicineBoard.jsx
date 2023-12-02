@@ -10,7 +10,7 @@ import useProcessDialog from "../../../../hooks/useProcessDialog";
 export const MedicineBoard = ({ attr, diaLogName }) => {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [medicines, setMedicines] = useState(medicinesMock);
+  const [medicines, setMedicines] = useState([]);
   const [selectedMedicines, setSelectedMedicines] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
