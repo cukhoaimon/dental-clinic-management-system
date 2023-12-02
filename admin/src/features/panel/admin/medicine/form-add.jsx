@@ -1,19 +1,26 @@
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 
 /* eslint-disable react/prop-types */
-export default function FormAdd() {
+export default function FormAdd({ submitAdd }) {
   const defaultFormValues = {
     name: "",
     usage: "",
   };
   const [formValues, setFormValues] = useState(defaultFormValues);
-  
-  useLayoutEffect(() => {
-    setFormValues(defaultFormValues);
-    return () => {
-        setFormValues(defaultFormValues);
-      };
-  },[])
+
+  // useLayoutEffect(() => {
+  //   setFormValues(defaultFormValues);
+  //   return () => {
+  //     setFormValues(defaultFormValues);
+  //   };
+  // }, []);
+
+  const checkValid = () => {
+    if (!formValues.name || !formValues.usage) {
+      return false;
+    }
+    return true;
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,8 +36,9 @@ export default function FormAdd() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          // submitAdd(formValues)
-          console.log(formValues)
+          if (!checkValid()) return;
+          submitAdd(formValues);
+          // console.log(formValues)
           setFormValues(defaultFormValues);
         }}
         className="min-w-[300px]"
@@ -61,8 +69,20 @@ export default function FormAdd() {
             onChange={(e) => handleChange(e)}
           />
         </div>
+        {checkValid() ? null : (
+          <p className="text-red-500">Vui lòng điền đầy đủ thông tin</p>
+        )}
         <div className="inline-flex w-full flex-row justify-end pt-4">
-          <button className="btn ml-2">Thêm</button>
+          <button
+            className="btn ml-2"
+            onClick={() => setFormValues(defaultFormValues)}
+            type="button"
+          >
+            Huỷ
+          </button>
+          <button className="btn ml-2" type="submit">
+            Thêm
+          </button>
         </div>
       </form>
     </>

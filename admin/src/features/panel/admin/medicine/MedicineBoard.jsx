@@ -47,6 +47,13 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
     setIsLoaded(true);
   }, [medicines]);
 
+  // Handle submit add 1 object
+  const submitAdd = (newValues) => {
+    console.log(newValues);
+    setMedicines((preMed) => [...preMed, newValues]);
+    setOpenDialog(false);
+  };
+
   // Handle delete selected
   const deleteSelected = () => {
     setOpenDialog(false);
@@ -54,7 +61,7 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
     selectedMedicines.forEach((med) => handleDelete(med));
   };
 
-  // Handle submit edit 1
+  // Handle submit edit 1 object
   const handleEdit = (newValues) => {
     setMedicines((preMed) =>
       preMed.map((medicine) =>
@@ -63,7 +70,7 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
     );
   };
 
-  // Handle submit delete 1
+  // Handle submit delete 1 object
   const handleDelete = (id) => {
     setMedicines((preMed) => preMed.filter((medicine) => medicine.id !== id));
   };
@@ -130,7 +137,7 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
               </div>
             </form>
           </>
-        ) : <FormAdd/>}
+        ) : <FormAdd submitAdd={submitAdd}/>}
       </Dialog>
 
       {/* Dialog lines */}
