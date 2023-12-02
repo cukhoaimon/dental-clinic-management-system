@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-
 function SignupForm() {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => console.log(data);

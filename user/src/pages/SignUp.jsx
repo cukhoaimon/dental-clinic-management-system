@@ -3,9 +3,11 @@ import Footer from "../ui/Footer";
 
 function SignUp() {
   return (
-    <div className="container-2xl flex h-screen items-center bg-neutral-200">
-      <div className=" mx-auto flex flex-col items-center justify-center ">
-        <SignupForm />
+    <div className="container-2xl bg-neutral-200 ">
+      <div className="flex h-screen flex-col items-center justify-between">
+        <div className="flex grow items-center ">
+          <SignupForm />
+        </div>
         <Footer />
       </div>
     </div>
