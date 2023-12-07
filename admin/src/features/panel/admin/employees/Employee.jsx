@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-export const Dentist = ({
-  dentist: { name, dob, phone, address },
+export const Employee = ({
+  employee: { name, dob, phone, address },
   index,
-  // dentist,
+  // employee,
   selected,
   handleCheck,
   handlePopUpEdit,
@@ -10,7 +10,7 @@ export const Dentist = ({
   return (
     <>
       <div
-        className="dentist flex h-20 w-full items-center border-b-[1px] border-black bg-white px-4 py-10"
+        className="employee flex h-20 w-full items-center border-b-[1px] border-black bg-white px-4 py-10"
         onClick={() => handlePopUpEdit(phone)}
       >
         <input
@@ -22,7 +22,7 @@ export const Dentist = ({
           name="all"
         />
         <p className="w-[15%] text-center">{index}</p>
-        <p className="w-1/5 text-left">BS. {name}</p>
+        <p className="w-1/5 text-left">{name}</p>
         <p className="w-1/8 text-left">{dob}</p>
         <p className="w-1/6 text-center">{phone}</p>
         <p className="w-[30%] text-center">{address}</p>

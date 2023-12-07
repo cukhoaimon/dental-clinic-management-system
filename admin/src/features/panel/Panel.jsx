@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { ItemSide } from "./ItemSide";
 import { MedicineBoard } from "./admin/medicine/MedicineBoard";
 import { DentistBoard } from "./admin/dentist/DentistBoard";
+import { EmployeeBoard } from "./admin/employees/EmployeeBoard";
 import useProcessDialog from "../../hooks/useProcessDialog";
 import { sideDataMock } from "./mocks/sideData";
 
@@ -124,6 +125,14 @@ export const Panel = () => {
 
             {selectedTitle === "Nha sĩ" && (
               <DentistBoard
+                setOpenDialog={setOpenDialog}
+                attr={attr}
+                diaLogName={diaLogName}
+              />
+            )}
+
+            {selectedTitle === "Nhân viên" && (
+              <EmployeeBoard
                 setOpenDialog={setOpenDialog}
                 attr={attr}
                 diaLogName={diaLogName}
