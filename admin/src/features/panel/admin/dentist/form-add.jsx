@@ -4,23 +4,14 @@ import { useState } from "react";
 export default function FormAdd({ submitAdd }) {
   const defaultFormValues = {
     name: "",
-    usage: "",
-    price: "",
-    unit: "",
-    expDay: "",
-    inventoryQuantity: "",
+    dob: "",
+    phone: "",
+    address: "",
   };
   const [formValues, setFormValues] = useState(defaultFormValues);
 
-  // useLayoutEffect(() => {
-  //   setFormValues(defaultFormValues);
-  //   return () => {
-  //     setFormValues(defaultFormValues);
-  //   };
-  // }, []);
-
   const checkValid = () => {
-    if (!formValues.name || !formValues.usage || !formValues.price || !formValues.unit || !formValues.expDay || !formValues.inventoryQuantity) {
+    if (!formValues.name || !formValues.dob || !formValues.phone || !formValues.address) {
       return false;
     }
     return true;
@@ -48,9 +39,7 @@ export default function FormAdd({ submitAdd }) {
         className="min-w-[300px]"
       >
         <div className="form-group">
-          <label htmlFor="name" className="block">
-            Tên thuốc
-          </label>
+          <label htmlFor="name">Họ và tên</label>
           <input
             id="name"
             type="text"
@@ -61,59 +50,35 @@ export default function FormAdd({ submitAdd }) {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="usage" className="block">
-            Chỉ định
-          </label>
+          <label htmlFor="dob">Ngày sinh</label>
           <input
-            id="usage"
+            id="dob"
             type="text"
-            name="usage"
+            name="dob"
             className=" input-field"
-            value={formValues.usage}
+            value={formValues.dob}
             onChange={(e) => handleChange(e)}
           />
         </div>
         <div className="form-group">
-          <label htmlFor="price">Giá (VNĐ)</label>
+          <label htmlFor="phone">Số điện thoại</label>
           <input
-            id="price"
+            id="phone"
             type="text"
-            name="price"
+            name="phone"
             className=" input-field"
-            value={formValues.price}
+            value={formValues.phone}
             onChange={(e) => handleChange(e)}
           />
         </div>
         <div className="form-group">
-          <label htmlFor="unit">Đơn vị tính</label>
+          <label htmlFor="address">Địa chỉ</label>
           <input
-            id="unit"
+            id="address"
             type="text"
-            name="unit"
+            name="address"
             className="input-field"
-            value={formValues.unit}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="expDay">Ngày hết hạn</label>
-          <input
-            id="expDay"
-            type="text"
-            name="expDay"
-            className="input-field"
-            value={formValues.expDay}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="expDay">Số lượng tồn kho</label>
-          <input
-            id="inventoryQuantity"
-            type="text"
-            name="inventoryQuantity"
-            className="input-field"
-            value={formValues.inventoryQuantity}
+            value={formValues.address}
             onChange={(e) => handleChange(e)}
           />
         </div>
