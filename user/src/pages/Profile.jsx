@@ -1,9 +1,25 @@
+import { useState } from "react";
 import UpdateForm from "../features/userProfile/UpdateForm";
 import UserProfile from "../features/userProfile/UserProfile";
 import Footer from "../ui/Footer";
 import Header from "../ui/Header";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 
 function Profile() {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div className="container-2xl bg-neutral-200 ">
       <div className="flex h-screen flex-col items-center justify-between">
@@ -18,9 +34,18 @@ function Profile() {
               dob="01/01/1997"
               address="co me may beo ayyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
               phone="0123123123"
+              onClick={handleClickOpen}
             />
           </div>
-          <UpdateForm />
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Chỉnh sửa thông tin</DialogTitle>
+            <DialogContent>
+              <UpdateForm />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Huỷ</Button>
+            </DialogActions>
+          </Dialog>
         </div>
         <Footer />
       </div>

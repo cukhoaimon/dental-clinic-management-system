@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-
+import { Link } from "react-router-dom";
 function LoginForm() {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => console.log(data);
@@ -57,12 +57,12 @@ function LoginForm() {
       <div className="mt-5 text-center">
         <span className=" text-sm font-medium text-cyan-900">
           Chưa có tài khoản?{" "}
-          <a
-            href="#"
+          <Link
+            to="/signup"
             className=" text-sm font-medium text-green-700 hover:underline"
           >
             Đăng kí ngay!
-          </a>
+          </Link>
         </span>
       </div>
     </div>

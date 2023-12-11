@@ -1,4 +1,4 @@
-function UserProfile({ name, dob, address, phone }) {
+function UserProfile({ name, dob, address, phone, onClick }) {
   return (
     <div className="infomation">
       <div className="mb-10 flex gap-10">
@@ -22,7 +22,10 @@ function UserProfile({ name, dob, address, phone }) {
         <p className="text-xl">{phone}</p>
       </div>
       <div className="flex justify-center">
-        <button className="h-[45px] w-[300px] rounded-[10px] bg-emerald-400 shadow hover:opacity-90">
+        <button
+          onClick={onClick}
+          className="h-[45px] w-[300px] rounded-[10px] bg-emerald-400 shadow hover:opacity-90"
+        >
           <span className=" text-center text-base font-medium   text-cyan-900">
             Cập nhật
           </span>
