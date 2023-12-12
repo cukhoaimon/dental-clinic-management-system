@@ -19,7 +19,7 @@ export const dentistsMock = [
         address: "Hẻm 48 Bùi Thị Xuân",
     },
     {
-        name: "Luks Modric",
+        name: "Luka Modric",
         dob: "01/01/1997",
         phone: "0123456589",
         address: "Hẻm 48 Bùi Thị Xuân",

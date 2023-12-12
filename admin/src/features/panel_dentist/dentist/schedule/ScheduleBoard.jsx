@@ -1,85 +1,85 @@
 import { Fragment, useState, useMemo, useEffect } from "react";
-import { Patient } from "./Patient";
+import { Schedule } from "./Schedule";
 import { Pagination } from "../../../common/Pagination";
-import { patientsMock, PATIENTS_PER_PAGE } from "../../mocks/patients";
+import {schedulesMock, SCHEDULES_PER_PAGE } from "../../mocks/schedules";
 import FormED from "./form-edit-delete";
 import FormAdd from "./form-add";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
 
 /* eslint-disable react/prop-types */
-export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
+export const ScheduleBoard = ({ attr, diaLogName, setOpenDialog }) => {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [patients, setPatients] = useState([]);
-  const [selectedPatients, setSelectedPatients] = useState([]);
+  const [schedules, setSchedules] = useState([]);
+  const [selectedSchedules, setSelectedSchedules] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const currentDens = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PATIENTS_PER_PAGE;
-    const lastPageIndex = firstPageIndex + PATIENTS_PER_PAGE;
-    return patients.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, patients]);
+    const firstPageIndex = (currentPage - 1) * SCHEDULES_PER_PAGE;
+    const lastPageIndex = firstPageIndex + SCHEDULES_PER_PAGE;
+    return schedules.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, schedules]);
 
   const handleCheckAll = () => {
     if (isCheckAll) {
-      setSelectedPatients([]);
+      setSelectedSchedules([]);
     } else {
-      setSelectedPatients(patients.map((patient) => patient.phone));
+      setSelectedSchedules(schedules.map((schedule) => schedule.id));
     }
 
     setIsCheckAll(!isCheckAll);
   };
 
-  const handleCheck = (phone) => {
-    if (selectedPatients.includes(phone)) {
-      setSelectedPatients(
-        selectedPatients.filter((medicineId) => medicineId !== phone),
+  const handleCheck = (id) => {
+    if (selectedSchedules.includes(id)) {
+      setSelectedSchedules(
+        selectedSchedules.filter((medicineId) => medicineId !== id),
       );
     } else {
-      setSelectedPatients([...selectedPatients, phone]);
+      setSelectedSchedules([...selectedSchedules, id]);
     }
   };
 
   // load data
   useEffect(() => {
-    setPatients(isLoaded ? patients : patientsMock);
+    setSchedules(isLoaded ? schedules : schedulesMock);
     setIsLoaded(true);
-  }, [patients, isLoaded]);
+  }, [schedules, isLoaded]);
 
   // Handle submit add 1 object
   const submitAdd = (newValues) => {
     console.log(newValues);
-    setPatients((preDen) => [...preDen, newValues]);
+    setSchedules((preDen) => [...preDen, newValues]);
     setOpenDialog(false);
   };
 
   // Handle delete selected
   const deleteSelected = () => {
     setOpenDialog(false);
-    if (!selectedPatients) return;
-    selectedPatients.forEach((patient) => handleDelete(patient));
+    if (!selectedSchedules) return;
+    selectedSchedules.forEach((schedule) => handleDelete(schedule));
   };
 
   // Handle submit edit 1 object
   const handleEdit = (newValues) => {
-    setPatients((preDen) =>
-      preDen.map((patient) =>
-        patient.phone === newValues.phone ? newValues : patient,
+    setSchedules((preDen) =>
+      preDen.map((schedule) =>
+        schedule.id === newValues.id ? newValues : schedule,
       ),
     );
   };
 
   // Handle submit delete 1 object
-  const handleDelete = (phone) => {
-    setPatients((preDen) => preDen.filter((patient) => patient.phone !== phone));
+  const handleDelete = (id) => {
+    setSchedules((preDen) => preDen.filter((schedule) => schedule.id !== id));
   };
 
   const submitEdit = (newValues, formState) => {
     if (formState === "edit") {
       handleEdit(newValues);
     } else {
-      handleDelete(newValues.phone);
+      handleDelete(newValues.id);
     }
 
     setOpenDialogEdit(false);
@@ -88,23 +88,23 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
   // handle dialog edit
   const [openDialogEdit, setOpenDialogEdit] = useState(false);
-  const [editedPatient, setEditedPatient] = useState(null);
+  const [editedSchedule, setEditedSchedule] = useState(null);
 
   const attr1 = useProcessDialog({
-    id: "editPatient",
-    title: "Chỉnh sửa thuốc",
+    id: "editSchedule",
+    title: "Chỉnh sửa lịch",
     triggerValue: openDialogEdit,
     onClose: () => {
-      setEditedPatient(null);
+      setEditedSchedule(null);
 
       setOpenDialogEdit(false);
     },
   });
 
-  const handlePopUpEdit = (phone) => {
-    const res = patients.find((patient) => patient.phone === phone);
+  const handlePopUpEdit = (id) => {
+    const res = schedules.find((schedule) => schedule.id === id);
     
-    setEditedPatient(res);
+    setEditedSchedule(res);
 
     setOpenDialogEdit(true);
   };
@@ -115,7 +115,7 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
       <Dialog title={diaLogName} attr={attr}>
         {diaLogName === "Xoá" ? (
           <>
-            <p>Xoá các bệnh nhân đã chọn?</p>
+            <p>Xoá các lịch đã chọn?</p>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -141,8 +141,8 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
       </Dialog>
 
       {/* Dialog lines */}
-      <Dialog title={"Chỉnh sửa hồ sơ"} attr={attr1}>
-        <FormED editedPatient={editedPatient} submitEdit={submitEdit} />
+      <Dialog title={"Chỉnh sửa lịch hẹn"} attr={attr1}>
+        <FormED editedSchedule={editedSchedule} submitEdit={submitEdit} />
       </Dialog>
 
       <div className="nav-table flex h-12 items-center rounded-tl-xl rounded-tr-xl bg-gray-400 px-4">
@@ -154,29 +154,28 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
           name="all"
           id="all"
         />
-        <p className="w-[15%] text-center">STT</p>
-        <p className="w-1/5 text-left">Họ và tên</p>
-        <p className="w-1/8 text-left">Ngày sinh</p>
-        <p className="w-1/6 text-center">Số điện thoại</p>
-        <p className="w-[30%] text-center">Địa chỉ</p>
+        <p className="w-[15%] text-center">Mã lịch hẹn</p>
+        <p className="w-1/3 text-left">Bệnh nhân</p>
+        <p className="w-1/5 text-center">Ngày đăng ký</p>
+        <p className="w-1/5 text-center">Ngày hẹn</p>
         <p className="text-center"></p>
       </div>
 
       <div className="h table w-full overflow-y-auto">
-        {currentDens.map((patient,index) => (
-          <Patient
+        {currentDens.map((schedule,index) => (
+          <Schedule
             key={index}
-            patient={patient}
+            schedule={schedule}
             index={index + 1}
             handleCheck={handleCheck}
-            selected={selectedPatients.includes(patient.phone)}
+            selected={selectedSchedules.includes(schedule.id)}
             handlePopUpEdit={handlePopUpEdit}
           />
         ))}
         <div className="pagination__wrapper">
           <Pagination
-            totalItems={patients.flat().length}
-            itemsPerPage={PATIENTS_PER_PAGE}
+            totalItems={schedules.flat().length}
+            itemsPerPage={SCHEDULES_PER_PAGE}
             currentPage={currentPage}
             onPageChange={(page) => setCurrentPage(page)}
           />

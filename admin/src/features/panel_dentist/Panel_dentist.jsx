@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import { ItemSide } from "../common/ItemSide";
-// import { MedicineBoard } from "./dentist/medicine/MedicineBoard";
+
 import { PatientBoard } from "./dentist/patient/PatientBoard";
-// import { EmployeeBoard } from "./dentist/employees/EmployeeBoard";
+import { ScheduleBoard } from "./dentist/schedule/ScheduleBoard";
 import useProcessDialog from "../../hooks/useProcessDialog";
 import { sideDataMock } from "./mocks/sideData";
 
@@ -115,13 +115,13 @@ export const Panel_dentist = () => {
           </div>
 
           <div className="main-content w-full px-10 py-5">
-            {/* {selectedTitle === "Thuốc" && (
-              <MedicineBoard
+            {selectedTitle === "Lịch hẹn" && (
+              <ScheduleBoard
                 setOpenDialog={setOpenDialog}
                 attr={attr}
                 diaLogName={diaLogName}
               />
-            )} */}
+            )}
 
             {selectedTitle === "Hồ sơ bệnh nhân" && (
               <PatientBoard
@@ -130,14 +130,6 @@ export const Panel_dentist = () => {
                 diaLogName={diaLogName}
               />
             )}
-
-            {/* {selectedTitle === "Nhân viên" && (
-              <EmployeeBoard
-                setOpenDialog={setOpenDialog}
-                attr={attr}
-                diaLogName={diaLogName}
-              />
-            )} */}
           </div>
         </div>
       </div>
