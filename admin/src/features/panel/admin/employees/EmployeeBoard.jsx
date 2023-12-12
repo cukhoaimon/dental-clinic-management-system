@@ -141,7 +141,7 @@ export const EmployeeBoard = ({ attr, diaLogName, setOpenDialog }) => {
       </Dialog>
 
       {/* Dialog lines */}
-      <Dialog title={"Chỉnh sửa thuốc"} attr={attr1}>
+      <Dialog title={"Chỉnh sửa hồ sơ"} attr={attr1}>
         <FormED editedEmployee={editedEmployee} submitEdit={submitEdit} />
       </Dialog>
 

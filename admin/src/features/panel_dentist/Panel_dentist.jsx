@@ -1,13 +1,13 @@
 import { Fragment, useEffect, useState } from "react";
 import { ItemSide } from "../common/ItemSide";
-import { MedicineBoard } from "./admin/medicine/MedicineBoard";
-import { DentistBoard } from "./admin/dentist/DentistBoard";
-import { EmployeeBoard } from "./admin/employees/EmployeeBoard";
+// import { MedicineBoard } from "./dentist/medicine/MedicineBoard";
+import { PatientBoard } from "./dentist/patient/PatientBoard";
+// import { EmployeeBoard } from "./dentist/employees/EmployeeBoard";
 import useProcessDialog from "../../hooks/useProcessDialog";
 import { sideDataMock } from "./mocks/sideData";
 
-export const Panel = () => {
-  const [selectedTitle, setSelectedTitle] = useState("Thuốc");
+export const Panel_dentist = () => {
+  const [selectedTitle, setSelectedTitle] = useState("Hồ sơ bệnh nhân");
   const [sideData, setSideData] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -115,29 +115,29 @@ export const Panel = () => {
           </div>
 
           <div className="main-content w-full px-10 py-5">
-            {selectedTitle === "Thuốc" && (
+            {/* {selectedTitle === "Thuốc" && (
               <MedicineBoard
                 setOpenDialog={setOpenDialog}
                 attr={attr}
                 diaLogName={diaLogName}
               />
-            )}
+            )} */}
 
-            {selectedTitle === "Nha sĩ" && (
-              <DentistBoard
+            {selectedTitle === "Hồ sơ bệnh nhân" && (
+              <PatientBoard
                 setOpenDialog={setOpenDialog}
                 attr={attr}
                 diaLogName={diaLogName}
               />
             )}
 
-            {selectedTitle === "Nhân viên" && (
+            {/* {selectedTitle === "Nhân viên" && (
               <EmployeeBoard
                 setOpenDialog={setOpenDialog}
                 attr={attr}
                 diaLogName={diaLogName}
               />
-            )}
+            )} */}
           </div>
         </div>
       </div>

@@ -1,78 +1,78 @@
 import { Fragment, useState, useMemo, useEffect } from "react";
-import { Dentist } from "./Dentist";
+import { Patient } from "./Patient";
 import { Pagination } from "../../../common/Pagination";
-import { dentistsMock, DENS_PER_PAGE } from "../../mocks/dentists";
+import { patientsMock, PATIENTS_PER_PAGE } from "../../mocks/patients";
 import FormED from "./form-edit-delete";
 import FormAdd from "./form-add";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
 
 /* eslint-disable react/prop-types */
-export const DentistBoard = ({ attr, diaLogName, setOpenDialog }) => {
+export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [dentists, setDentists] = useState([]);
-  const [selectedDentists, setSelectedDentists] = useState([]);
+  const [patients, setPatients] = useState([]);
+  const [selectedPatients, setSelectedPatients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const currentDens = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * DENS_PER_PAGE;
-    const lastPageIndex = firstPageIndex + DENS_PER_PAGE;
-    return dentists.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, dentists]);
+    const firstPageIndex = (currentPage - 1) * PATIENTS_PER_PAGE;
+    const lastPageIndex = firstPageIndex + PATIENTS_PER_PAGE;
+    return patients.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, patients]);
 
   const handleCheckAll = () => {
     if (isCheckAll) {
-      setSelectedDentists([]);
+      setSelectedPatients([]);
     } else {
-      setSelectedDentists(dentists.map((dentist) => dentist.phone));
+      setSelectedPatients(patients.map((patient) => patient.phone));
     }
 
     setIsCheckAll(!isCheckAll);
   };
 
   const handleCheck = (phone) => {
-    if (selectedDentists.includes(phone)) {
-      setSelectedDentists(
-        selectedDentists.filter((medicineId) => medicineId !== phone),
+    if (selectedPatients.includes(phone)) {
+      setSelectedPatients(
+        selectedPatients.filter((medicineId) => medicineId !== phone),
       );
     } else {
-      setSelectedDentists([...selectedDentists, phone]);
+      setSelectedPatients([...selectedPatients, phone]);
     }
   };
 
   // load data
   useEffect(() => {
-    setDentists(isLoaded ? dentists : dentistsMock);
+    setPatients(isLoaded ? patients : patientsMock);
     setIsLoaded(true);
-  }, [dentists]);
+  }, [patients]);
 
   // Handle submit add 1 object
   const submitAdd = (newValues) => {
     console.log(newValues);
-    setDentists((preDen) => [...preDen, newValues]);
+    setPatients((preDen) => [...preDen, newValues]);
     setOpenDialog(false);
   };
 
   // Handle delete selected
   const deleteSelected = () => {
     setOpenDialog(false);
-    if (!selectedDentists) return;
-    selectedDentists.forEach((den) => handleDelete(den));
+    if (!selectedPatients) return;
+    selectedPatients.forEach((patient) => handleDelete(patient));
   };
 
   // Handle submit edit 1 object
   const handleEdit = (newValues) => {
-    setDentists((preDen) =>
-      preDen.map((dentist) =>
-        dentist.phone === newValues.phone ? newValues : dentist,
+    setPatients((preDen) =>
+      preDen.map((patient) =>
+        patient.phone === newValues.phone ? newValues : patient,
       ),
     );
   };
 
   // Handle submit delete 1 object
   const handleDelete = (phone) => {
-    setDentists((preDen) => preDen.filter((dentist) => dentist.phone !== phone));
+    setPatients((preDen) => preDen.filter((patient) => patient.phone !== phone));
   };
 
   const submitEdit = (newValues, formState) => {
@@ -88,23 +88,23 @@ export const DentistBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
   // handle dialog edit
   const [openDialogEdit, setOpenDialogEdit] = useState(false);
-  const [editedDentist, setEditedDentist] = useState(null);
+  const [editedPatient, setEditedPatient] = useState(null);
 
   const attr1 = useProcessDialog({
-    id: "editDentist",
+    id: "editPatient",
     title: "Chỉnh sửa thuốc",
     triggerValue: openDialogEdit,
     onClose: () => {
-      setEditedDentist(null);
+      setEditedPatient(null);
 
       setOpenDialogEdit(false);
     },
   });
 
   const handlePopUpEdit = (phone) => {
-    const res = dentists.find((dentist) => dentist.phone === phone);
+    const res = patients.find((patient) => patient.phone === phone);
     
-    setEditedDentist(res);
+    setEditedPatient(res);
 
     setOpenDialogEdit(true);
   };
@@ -142,7 +142,7 @@ export const DentistBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
       {/* Dialog lines */}
       <Dialog title={"Chỉnh sửa hồ sơ"} attr={attr1}>
-        <FormED editedDentist={editedDentist} submitEdit={submitEdit} />
+        <FormED editedPatient={editedPatient} submitEdit={submitEdit} />
       </Dialog>
 
       <div className="nav-table flex h-12 items-center rounded-tl-xl rounded-tr-xl bg-gray-400 px-4">
@@ -162,20 +162,20 @@ export const DentistBoard = ({ attr, diaLogName, setOpenDialog }) => {
       </div>
 
       <div className="h table w-full overflow-y-auto">
-        {currentDens.map((dentist,index) => (
-          <Dentist
+        {currentDens.map((patient,index) => (
+          <Patient
             key={index}
-            dentist={dentist}
+            patient={patient}
             index={index + 1}
             handleCheck={handleCheck}
-            selected={selectedDentists.includes(dentist.phone)}
+            selected={selectedPatients.includes(patient.phone)}
             handlePopUpEdit={handlePopUpEdit}
           />
         ))}
         <div className="pagination__wrapper">
           <Pagination
-            totalItems={dentists.flat().length}
-            itemsPerPage={DENS_PER_PAGE}
+            totalItems={patients.flat().length}
+            itemsPerPage={PATIENTS_PER_PAGE}
             currentPage={currentPage}
             onPageChange={(page) => setCurrentPage(page)}
           />
