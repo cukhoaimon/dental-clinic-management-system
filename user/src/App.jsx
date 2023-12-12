@@ -4,6 +4,7 @@ import SignUp from "./pages/SignUp";
 import Booking from "./pages/Booking";
 import Home from "./pages/Home";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import MedicalRecord from "./pages/MedicalRecord";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/medicalrecord" element={<MedicalRecord />} />
       </Routes>
     </BrowserRouter>
   );
