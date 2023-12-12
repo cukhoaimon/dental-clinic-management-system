@@ -4,14 +4,13 @@ import { useState } from "react";
 export default function FormAdd({ submitAdd }) {
   const defaultFormValues = {
     name: "",
-    dob: "",
-    phone: "",
-    address: "",
+    enrollDate: "",
+    appointmentDate: "",
   };
   const [formValues, setFormValues] = useState(defaultFormValues);
 
   const checkValid = () => {
-    if (!formValues.name || !formValues.dob || !formValues.phone || !formValues.address) {
+    if (!formValues.name || !formValues.enrollDate || !formValues.appointmentDate) {
       return false;
     }
     return true;
@@ -50,35 +49,24 @@ export default function FormAdd({ submitAdd }) {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="dob">Ngày sinh</label>
+          <label htmlFor="enrollDate">Ngày đăng ký</label>
           <input
-            id="dob"
+            id="enrollDate"
             type="text"
-            name="dob"
+            name="enrollDate"
             className=" input-field"
-            value={formValues.dob}
+            value={formValues.enrollDate}
             onChange={(e) => handleChange(e)}
           />
         </div>
         <div className="form-group">
-          <label htmlFor="phone">Số điện thoại</label>
+          <label htmlFor="appointmentDate">Ngày hẹn</label>
           <input
-            id="phone"
+            id="appointmentDate"
             type="text"
-            name="phone"
+            name="appointmentDate"
             className=" input-field"
-            value={formValues.phone}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="address">Địa chỉ</label>
-          <input
-            id="address"
-            type="text"
-            name="address"
-            className="input-field"
-            value={formValues.address}
+            value={formValues.appointmentDate}
             onChange={(e) => handleChange(e)}
           />
         </div>
