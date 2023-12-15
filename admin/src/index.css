@@ -1,3 +1,97 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn {
+  @apply bg-sky-300 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded;
+}
+
+.btn-delete {
+  @apply bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded;
+}
+
+.form-group {
+  @apply mb-2;
+}
+
+.form-group label {
+  @apply font-bold text-sky-600 block;
+}
+
+.input-field {
+  @apply border-2 w-full px-2 py-1 border-sky-300; 
+}
+
+.pagination__wrapper {
+  padding-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  justify-content: center;
+}
+
+.pagination a {
+  cursor: pointer;
+  margin: 0 5px;
+  padding: 4px 12px;
+  background-color: var(--color-background);
+  border: 1px solid #9facba;
+  color: var(--color-text);
+  user-select: none;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.pagination a:hover {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+.pagination__link--active a {
+  background-color: var(--color-primary);
+  font-weight: bold;
+  color: var(--color-background);
+}
+
+.pagination__link--disabled a {
+  cursor: not-allowed;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+/**
+   * 1. Make sure the dialog container and all its descendants are not
+   *    visible and not focusable when it is hidden.
+   */
+.dialog-container[aria-hidden="true"] {
+  /* display: none;  */
+  /* 1 */
+  @apply hidden;
+}
+
+.confirm-delete {
+  max-width: 200px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.confirm-delete p span {
+  font-weight: bold;
+}
+
+.confirm-delete__btns {
+  display: flex;
+  margin-top: 36px;
+  column-gap: 12px;
+}
+
+.confirm-delete__btns .btn--delete {
+  background-color: transparent;
+  color: var(--color-text);
+}
