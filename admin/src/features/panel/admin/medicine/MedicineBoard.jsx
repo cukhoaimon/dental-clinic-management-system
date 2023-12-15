@@ -33,7 +33,7 @@ export const MedicineBoard = () => {
 
   return (
     <Fragment>
-      <div className="nav-table flex h-12 items-center rounded-tl-xl rounded-tr-xl bg-gray-400 px-4">
+      <div className="nav-table flex h-12 text-gray-700 items-center rounded-tl-xl rounded-tr-xl bg-gray-400 px-4">
         <input
           onChange={handleCheckAll}
           checked={isCheckAll}

@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from 'react'
 import { ItemSide } from './ItemSide'
 import { MedicineBoard } from './admin/medicine/MedicineBoard'
 import { sideDataMock } from './mocks/sideData'
+import { Link } from 'react-router-dom'
 
 export const Panel = () => {
     const [selectedTitle, setSelectedTitle] = useState('Thuốc')
@@ -28,7 +29,7 @@ export const Panel = () => {
   return (
     <Fragment>
         <div className='nav h-[60px] bg-sky-100 flex items-center px-4 justify-between'>
-            <button className='h-10 w-24 rounded-lg bg-sky-300 text-sky-600 font-bold'>Home</button>
+            <Link to="/" className='h-10 w-24 rounded-lg bg-sky-300 text-center leading-10 text-sky-600 font-bold'>Home</Link>
             <div className='search-bar w-[500px] flex'>
                 <input onChange={handleSearchChange} className='w-3/5 mr-3 px-3 rounded-full' type="text" name="search" id="search" placeholder='Nhập để tìm kiếm theo mã'/>
                 <button onClick={handleSearchSubmit} className='w-1/5 h-10 rounded-lg bg-sky-300 text-sky-600 font-bold'>Tìm</button>
