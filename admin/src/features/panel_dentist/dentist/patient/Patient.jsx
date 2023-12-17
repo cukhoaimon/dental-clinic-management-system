@@ -6,6 +6,7 @@ export const Patient = ({
   selected,
   handleCheck,
   handlePopUpEdit,
+  handlePopUpPatientRecords,
 }) => {
   return (
     <>
@@ -26,7 +27,7 @@ export const Patient = ({
         <p className="w-1/8 text-left">{dob}</p>
         <p className="w-1/6 text-center">{phone}</p>
         <p className="w-[30%] text-center">{address}</p>
-        <p onClick={(e)=>e.stopPropagation()} className="text-center text-2xl text-green-500"><a href="">➜</a></p>
+        <p onClick={(e)=>{e.stopPropagation(); handlePopUpPatientRecords()}} className="cursor-pointer text-center text-2xl text-green-500">➜</p>
         {/* <p className="w-1/6 text-center">{expDay}</p>
         <p className="w-[10%] text-center">{inventoryQuantity}</p> */}
       </div>

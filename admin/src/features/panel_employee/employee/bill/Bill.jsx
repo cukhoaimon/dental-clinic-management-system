@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
-export const Schedule = ({
-  schedule: { id, name, enrollDate, appointmentDate, status },
+import { Link } from "react-router-dom";
+
+export const Bill = ({
+  schedule: { id, name, dentalVisitDate, status },
   
   // schedule,
   selected,
@@ -24,9 +26,9 @@ export const Schedule = ({
         />
         <p className="w-[15%] text-center">{id}</p>
         <p className="w-1/3 text-left">{name}</p>
-        <p className="w-1/5 text-center">{enrollDate}</p>
-        <p className="w-1/5 text-center">{appointmentDate}</p>
-        <p className={"text-center " + statusColor}>{status ? "Đã duyệt" : "Chưa duyệt"}</p>
+        <p className="w-1/5 text-center">{dentalVisitDate}</p>
+        <p className={"w-1/5 text-center " + statusColor}>{status === true ? "Đã thanh toán" : "Chưa thanh toán"}</p>
+        <p onClick={(e)=>e.stopPropagation()} className="text-center text-2xl text-green-500"><Link to={`/employee/bills/${id[id.length - 1]}`}>➜</Link></p>
         {/* <p className="w-1/6 text-center">{expDay}</p>
         <p className="w-[10%] text-center">{inventoryQuantity}</p> */}
       </div>

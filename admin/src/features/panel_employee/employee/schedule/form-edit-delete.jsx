@@ -33,7 +33,11 @@ export default function FormED({ editedSchedule, submitEdit }) {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+
+    if (name === "status") {
+      value = value === "true" ? true : false;
+    }
 
     setFormValues((prev) => ({
       ...prev,
@@ -90,6 +94,13 @@ export default function FormED({ editedSchedule, submitEdit }) {
             value={formValues.appointmentDate}
             onChange={(e) => handleChange(e)}
           />
+        </div>
+        <div className="form-group">
+          <label htmlFor="status">Trạng thái</label>
+          <select onChange={handleChange} name="status" value={formValues.status} disabled={formState !== "edit"}>
+            <option value="false">Chưa duyệt</option>
+            <option value="true">Đã duyệt</option>
+          </select>
         </div>
         
         {!valid && (

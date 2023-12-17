@@ -67,7 +67,7 @@ export const Panel_dentist = () => {
       <div className="main-container flex">
         <div className="side w-1/4 pt-10">
           <div className="title mx-8 mb-10">
-            <p className="h-16 w-[240px] rounded-2xl bg-sky-300 text-center text-3xl font-bold leading-[64px] text-sky-600 shadow-lg">
+            <p className="py-2 rounded-2xl bg-sky-300 text-center text-3xl font-bold leading-[64px] text-sky-600 shadow-lg">
               {selectedTitle}
             </p>
           </div>

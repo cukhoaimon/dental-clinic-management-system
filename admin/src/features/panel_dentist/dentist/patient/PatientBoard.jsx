@@ -6,6 +6,7 @@ import FormED from "./form-edit-delete";
 import FormAdd from "./form-add";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
+import PatientRecord from "./patient-records";
 
 /* eslint-disable react/prop-types */
 export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
@@ -92,7 +93,7 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
   const attr1 = useProcessDialog({
     id: "editPatient",
-    title: "Chỉnh sửa thuốc",
+    title: "Chỉnh sửa hồ sơ",
     triggerValue: openDialogEdit,
     onClose: () => {
       setEditedPatient(null);
@@ -108,6 +109,31 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
     setOpenDialogEdit(true);
   };
+
+   // handle dialog patient records  
+   const [openDialogPatientRecords, setopenDialogPatientRecords] = useState(false);
+   const [patientRecords, setPatientRecords] = useState(null);
+ 
+   const attr2 = useProcessDialog({
+     id: "patientRecords",
+     title: "Hồ sơ bệnh nhân",
+     triggerValue: openDialogPatientRecords,
+     onClose: () => {
+       setPatientRecords(null);
+ 
+       setopenDialogPatientRecords(false);
+     },
+   });
+
+    const handlePopUpPatientRecords = (phone) => {
+      const res = patients.find((patient) => patient.phone === phone);
+      
+      setPatientRecords(res);
+  
+      setopenDialogPatientRecords(true);
+    }
+
+
 
   return (
     <Fragment>
@@ -145,6 +171,11 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
         <FormED editedPatient={editedPatient} submitEdit={submitEdit} />
       </Dialog>
 
+      {/* Dialog patient records */}
+      <Dialog title={"Lịch sử khám bệnh"} attr={attr2}>
+        <PatientRecord patientRecords={patientRecords} />
+      </Dialog>
+
       <div className="nav-table flex h-12 items-center rounded-tl-xl rounded-tr-xl bg-gray-400 px-4">
         <input
           onChange={handleCheckAll}
@@ -171,6 +202,7 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
             handleCheck={handleCheck}
             selected={selectedPatients.includes(patient.phone)}
             handlePopUpEdit={handlePopUpEdit}
+            handlePopUpPatientRecords={handlePopUpPatientRecords}
           />
         ))}
         <div className="pagination__wrapper">
