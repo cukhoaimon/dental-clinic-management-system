@@ -11,6 +11,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 function Profile() {
   const [open, setOpen] = useState(false);
+  const [data, setData] = useState({
+    name: "Me may beoooooooooooo",
+    dob: "01/01/1997",
+    address: "co me may beo ayyyyyyyy",
+    phone: "0123456789",
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,17 +36,17 @@ function Profile() {
         <div className="flex w-screen grow items-center justify-center gap-52">
           <div className="border border-black  p-10">
             <UserProfile
-              name="Me may beoooooooooooo"
-              dob="01/01/1997"
-              address="co me may beo ayyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
-              phone="0123123123"
+              name={data.name}
+              dob={data.dob}
+              address={data.address}
+              phone={data.phone}
               onClick={handleClickOpen}
             />
           </div>
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Chỉnh sửa thông tin</DialogTitle>
             <DialogContent>
-              <UpdateForm />
+              <UpdateForm updateData={setData} />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Huỷ</Button>

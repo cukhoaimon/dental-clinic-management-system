@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 
-function UpdateForm() {
+function UpdateForm({ updateData }) {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => updateData(data);
 
   return (
     <form
