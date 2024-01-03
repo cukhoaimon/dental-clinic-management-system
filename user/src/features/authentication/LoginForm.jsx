@@ -1,8 +1,15 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+
+import { useLogin } from "./useLogin";
+
 function LoginForm() {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const { login, isLoading } = useLogin();
+
+  const onSubmit = ({ phone, password }) => {
+    login({ phone, password });
+  };
 
   // Todo
   return (
@@ -22,14 +29,14 @@ function LoginForm() {
           id="phone"
           className="h-[45px] w-[300px] rounded-[10px] bg-cyan-900 p-5 text-white"
           placeholder="Số điện thoại"
-          required="true"
+          required={true}
           {...register("phone", { required: true })}
         />
         <input
           type="password"
           className="h-[45px] w-[300px] rounded-[10px] bg-cyan-900 p-5 text-white"
           placeholder="Mật khẩu"
-          required="true"
+          required={true}
           {...register("password", { required: true })}
         />
         <div className="flex w-[300px] justify-around ">
@@ -48,8 +55,11 @@ function LoginForm() {
             Quên mật khẩu?
           </a>
         </div>
-        <button className="h-[45px] w-[300px] rounded-[10px] bg-emerald-400 shadow hover:opacity-90">
-          <span className=" text-center text-base font-medium   text-cyan-900">
+        <button
+          className="h-[45px] w-[300px] rounded-[10px] bg-emerald-400 shadow hover:opacity-90"
+          disabled={isLoading}
+        >
+          <span className=" text-center text-base font-medium text-cyan-900">
             Đăng nhập
           </span>
         </button>
