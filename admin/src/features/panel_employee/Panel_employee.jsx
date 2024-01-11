@@ -1,13 +1,14 @@
 import { Fragment, useEffect, useState } from "react";
 import { ItemSide } from "../common/ItemSide";
-import { MedicineBoard } from "./admin/medicine/MedicineBoard";
-import { DentistBoard } from "./admin/dentist/DentistBoard";
-import { EmployeeBoard } from "./admin/employees/EmployeeBoard";
+
+// import { PatientBoard } from "./employee/patient/PatientBoard";
+import { ScheduleBoard } from "./employee/schedule/ScheduleBoard";
 import useProcessDialog from "../../hooks/useProcessDialog";
 import { sideDataMock } from "./mocks/sideData";
+import { BillBoard } from "./employee/bill/BillBoard";
 
-export const Panel = () => {
-  const [selectedTitle, setSelectedTitle] = useState("Thuốc");
+export const Panel_employee = () => {
+  const [selectedTitle, setSelectedTitle] = useState("Tiếp nhận bệnh nhân");
   const [sideData, setSideData] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -67,7 +68,7 @@ export const Panel = () => {
       <div className="main-container flex">
         <div className="side w-1/4 pt-10">
           <div className="title mx-8 mb-10">
-            <p className="p-3 rounded-2xl bg-sky-300 text-center text-3xl font-bold leading-[64px] text-sky-600 shadow-lg">
+            <p className="py-2 px-8 rounded-2xl bg-sky-300 text-center text-3xl font-bold leading-[64px] text-sky-600 shadow-lg">
               {selectedTitle}
             </p>
           </div>
@@ -115,28 +116,16 @@ export const Panel = () => {
           </div>
 
           <div className="main-content w-full px-10 py-5">
-            {selectedTitle === "Thuốc" && (
-              <MedicineBoard
+            {selectedTitle === "Tiếp nhận bệnh nhân" && (
+              <ScheduleBoard
                 setOpenDialog={setOpenDialog}
                 attr={attr}
                 diaLogName={diaLogName}
               />
             )}
 
-            {selectedTitle === "Nha sĩ" && (
-              <DentistBoard
-                setOpenDialog={setOpenDialog}
-                attr={attr}
-                diaLogName={diaLogName}
-              />
-            )}
-
-            {selectedTitle === "Nhân viên" && (
-              <EmployeeBoard
-                setOpenDialog={setOpenDialog}
-                attr={attr}
-                diaLogName={diaLogName}
-              />
+            {selectedTitle === "Hoá đơn" && (
+              <BillBoard />
             )}
           </div>
         </div>

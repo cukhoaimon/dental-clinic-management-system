@@ -1,7 +1,7 @@
-import { useState, useLayoutEffect } from "react";
-/* eslint-disable react/prop-types */
+import { useState } from "react";
 
-export default function FormED({ editedMedicine, submitEdit }) {
+/* eslint-disable react/prop-types */
+export default function FormAdd({ submitAdd }) {
   const defaultFormValues = {
     name: "",
     usage: "",
@@ -10,23 +10,14 @@ export default function FormED({ editedMedicine, submitEdit }) {
     expDay: "",
     inventoryQuantity: "",
   };
-
   const [formValues, setFormValues] = useState(defaultFormValues);
-  const [formState, setFormState] = useState(null);
-  const [valid, setValid] = useState(true);
 
-  useLayoutEffect(() => {
-    if (editedMedicine) {
-      setFormValues(editedMedicine);
-    } else {
-      setFormValues(defaultFormValues);
-    }
-
-    setFormState(null);
-    return () => {
-      setFormValues(editedMedicine);
-    };
-  }, [editedMedicine]);
+  // useLayoutEffect(() => {
+  //   setFormValues(defaultFormValues);
+  //   return () => {
+  //     setFormValues(defaultFormValues);
+  //   };
+  // }, []);
 
   const checkValid = () => {
     if (!formValues.name || !formValues.usage || !formValues.price || !formValues.unit || !formValues.expDay || !formValues.inventoryQuantity) {
@@ -49,34 +40,34 @@ export default function FormED({ editedMedicine, submitEdit }) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          if (!checkValid()) {
-            setValid(false);
-            return;
-          } else setValid(true);
-          submitEdit?.(formValues, formState);
+          if (!checkValid()) return;
+          submitAdd(formValues);
+          // console.log(formValues)
           setFormValues(defaultFormValues);
         }}
         className="min-w-[300px]"
       >
         <div className="form-group">
-          <label htmlFor="name">Tên thuốc</label>
+          <label htmlFor="name" className="block">
+            Tên thuốc
+          </label>
           <input
             id="name"
             type="text"
             name="name"
-            disabled={formState !== "edit"}
             className=" input-field"
             value={formValues.name}
             onChange={(e) => handleChange(e)}
           />
         </div>
         <div className="form-group">
-          <label htmlFor="usage">Chỉ định</label>
+          <label htmlFor="usage" className="block">
+            Chỉ định
+          </label>
           <input
             id="usage"
             type="text"
             name="usage"
-            disabled={formState !== "edit"}
             className=" input-field"
             value={formValues.usage}
             onChange={(e) => handleChange(e)}
@@ -88,7 +79,6 @@ export default function FormED({ editedMedicine, submitEdit }) {
             id="price"
             type="text"
             name="price"
-            disabled={formState !== "edit"}
             className=" input-field"
             value={formValues.price}
             onChange={(e) => handleChange(e)}
@@ -100,7 +90,6 @@ export default function FormED({ editedMedicine, submitEdit }) {
             id="unit"
             type="text"
             name="unit"
-            disabled={formState !== "edit"}
             className="input-field"
             value={formValues.unit}
             onChange={(e) => handleChange(e)}
@@ -112,7 +101,6 @@ export default function FormED({ editedMedicine, submitEdit }) {
             id="expDay"
             type="text"
             name="expDay"
-            disabled={formState !== "edit"}
             className="input-field"
             value={formValues.expDay}
             onChange={(e) => handleChange(e)}
@@ -124,61 +112,25 @@ export default function FormED({ editedMedicine, submitEdit }) {
             id="inventoryQuantity"
             type="text"
             name="inventoryQuantity"
-            disabled={formState !== "edit"}
             className="input-field"
             value={formValues.inventoryQuantity}
             onChange={(e) => handleChange(e)}
           />
         </div>
-        {!valid && (
+        {checkValid() ? null : (
           <p className="text-red-500">Vui lòng điền đầy đủ thông tin</p>
         )}
-        {/* Button */}
         <div className="inline-flex w-full flex-row justify-end pt-4">
-          {formState === null && (
-            <>
-              <button className="btn" onClick={() => setFormState("edit")}>
-                Sửa
-              </button>
-              <button
-                className="btn ml-2"
-                onClick={() => setFormState("delete")}
-              >
-                Xoá
-              </button>
-            </>
-          )}
-          {formState === "edit" && (
-            <>
-              <button
-                className="btn ml-2"
-                onClick={() => {
-                  setFormState(null);
-                  setFormValues(editedMedicine);
-                }}
-              >
-                Huỷ
-              </button>
-              <button type="submit" className="btn ml-2">
-                Lưu
-              </button>
-            </>
-          )}
-          {formState === "delete" && (
-            <>
-              <button
-                className="btn ml-2"
-                onClick={() => {
-                  setFormState(null);
-                }}
-              >
-                Huỷ
-              </button>
-              <button type="submit" className="btn-delete ml-2">
-                Xoá
-              </button>
-            </>
-          )}
+          <button
+            className="btn ml-2"
+            onClick={() => setFormValues(defaultFormValues)}
+            type="button"
+          >
+            Huỷ
+          </button>
+          <button className="btn ml-2" type="submit">
+            Thêm
+          </button>
         </div>
       </form>
     </>

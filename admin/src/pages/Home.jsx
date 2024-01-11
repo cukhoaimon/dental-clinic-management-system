@@ -1,11 +1,22 @@
-import { Panel } from "../features/panel/Panel";
-
+import { Outlet, useLocation } from "react-router-dom";
+import { Navigate } from "react-router";
 
 function Home() {
+  // TODO: handle role here
+  const role = "employee";
+
+  // Get current location
+  const location = useLocation();
+  const regexPattern = /^\/employee\/bills\/\d+$/;
+
   return (
-    <div>
-      <Panel />
-    </div>
+    <>
+      <Outlet />
+      {role === "admin" && <Navigate to="/admin" />}
+      {role === "dentist" && <Navigate to="/dentist" />}
+      {role === "employee" && regexPattern.test(location.pathname) && <Navigate to={location.pathname} />}
+      {role === "employee" && <Navigate to="/employee" />}
+    </>
   );
 }
 

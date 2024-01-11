@@ -1,14 +1,11 @@
 import { useState, useLayoutEffect } from "react";
 /* eslint-disable react/prop-types */
 
-export default function FormED({ editedMedicine, submitEdit }) {
+export default function FormED({ editedSchedule, submitEdit }) {
   const defaultFormValues = {
     name: "",
-    usage: "",
-    price: "",
-    unit: "",
-    expDay: "",
-    inventoryQuantity: "",
+    enrollDate: "",
+    appointmentDate: "",
   };
 
   const [formValues, setFormValues] = useState(defaultFormValues);
@@ -16,20 +13,20 @@ export default function FormED({ editedMedicine, submitEdit }) {
   const [valid, setValid] = useState(true);
 
   useLayoutEffect(() => {
-    if (editedMedicine) {
-      setFormValues(editedMedicine);
+    if (editedSchedule) {
+      setFormValues(editedSchedule);
     } else {
       setFormValues(defaultFormValues);
     }
 
     setFormState(null);
     return () => {
-      setFormValues(editedMedicine);
+      setFormValues(editedSchedule);
     };
-  }, [editedMedicine]);
+  }, [editedSchedule]);
 
   const checkValid = () => {
-    if (!formValues.name || !formValues.usage || !formValues.price || !formValues.unit || !formValues.expDay || !formValues.inventoryQuantity) {
+    if (!formValues.name || !formValues.enrollDate || !formValues.appointmentDate) {
       return false;
     }
     return true;
@@ -59,7 +56,7 @@ export default function FormED({ editedMedicine, submitEdit }) {
         className="min-w-[300px]"
       >
         <div className="form-group">
-          <label htmlFor="name">Tên thuốc</label>
+          <label htmlFor="name">Họ và tên</label>
           <input
             id="name"
             type="text"
@@ -71,65 +68,30 @@ export default function FormED({ editedMedicine, submitEdit }) {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="usage">Chỉ định</label>
+          <label htmlFor="enrollDate">Ngày đăng ký</label>
           <input
-            id="usage"
+            id="enrollDate"
             type="text"
-            name="usage"
+            name="enrollDate"
             disabled={formState !== "edit"}
             className=" input-field"
-            value={formValues.usage}
+            value={formValues.enrollDate}
             onChange={(e) => handleChange(e)}
           />
         </div>
         <div className="form-group">
-          <label htmlFor="price">Giá (VNĐ)</label>
+          <label htmlFor="appointmentDate">Ngày hẹn</label>
           <input
-            id="price"
+            id="appointmentDate"
             type="text"
-            name="price"
+            name="appointmentDate"
             disabled={formState !== "edit"}
             className=" input-field"
-            value={formValues.price}
+            value={formValues.appointmentDate}
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="unit">Đơn vị tính</label>
-          <input
-            id="unit"
-            type="text"
-            name="unit"
-            disabled={formState !== "edit"}
-            className="input-field"
-            value={formValues.unit}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="expDay">Ngày hết hạn</label>
-          <input
-            id="expDay"
-            type="text"
-            name="expDay"
-            disabled={formState !== "edit"}
-            className="input-field"
-            value={formValues.expDay}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="expDay">Số lượng tồn kho</label>
-          <input
-            id="inventoryQuantity"
-            type="text"
-            name="inventoryQuantity"
-            disabled={formState !== "edit"}
-            className="input-field"
-            value={formValues.inventoryQuantity}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
+        
         {!valid && (
           <p className="text-red-500">Vui lòng điền đầy đủ thông tin</p>
         )}
@@ -154,7 +116,7 @@ export default function FormED({ editedMedicine, submitEdit }) {
                 className="btn ml-2"
                 onClick={() => {
                   setFormState(null);
-                  setFormValues(editedMedicine);
+                  setFormValues(editedSchedule);
                 }}
               >
                 Huỷ

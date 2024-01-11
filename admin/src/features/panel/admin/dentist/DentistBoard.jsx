@@ -1,85 +1,85 @@
 import { Fragment, useState, useMemo, useEffect } from "react";
-import { Medicine } from "./Medicine";
+import { Dentist } from "./Dentist";
 import { Pagination } from "../../../common/Pagination";
-import { medicinesMock, MEDS_PER_PAGE } from "../../mocks/medicines";
+import { dentistsMock, DENS_PER_PAGE } from "../../mocks/dentists";
 import FormED from "./form-edit-delete";
 import FormAdd from "./form-add";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
 
 /* eslint-disable react/prop-types */
-export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
+export const DentistBoard = ({ attr, diaLogName, setOpenDialog }) => {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [medicines, setMedicines] = useState([]);
-  const [selectedMedicines, setSelectedMedicines] = useState([]);
+  const [dentists, setDentists] = useState([]);
+  const [selectedDentists, setSelectedDentists] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const currentMeds = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * MEDS_PER_PAGE;
-    const lastPageIndex = firstPageIndex + MEDS_PER_PAGE;
-    return medicines.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, medicines]);
+  const currentDens = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * DENS_PER_PAGE;
+    const lastPageIndex = firstPageIndex + DENS_PER_PAGE;
+    return dentists.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, dentists]);
 
   const handleCheckAll = () => {
     if (isCheckAll) {
-      setSelectedMedicines([]);
+      setSelectedDentists([]);
     } else {
-      setSelectedMedicines(medicines.map((medicine) => medicine.id));
+      setSelectedDentists(dentists.map((dentist) => dentist.phone));
     }
 
     setIsCheckAll(!isCheckAll);
   };
 
-  const handleCheck = (id) => {
-    if (selectedMedicines.includes(id)) {
-      setSelectedMedicines(
-        selectedMedicines.filter((medicineId) => medicineId !== id),
+  const handleCheck = (phone) => {
+    if (selectedDentists.includes(phone)) {
+      setSelectedDentists(
+        selectedDentists.filter((medicineId) => medicineId !== phone),
       );
     } else {
-      setSelectedMedicines([...selectedMedicines, id]);
+      setSelectedDentists([...selectedDentists, phone]);
     }
   };
 
   // load data
   useEffect(() => {
-    setMedicines(isLoaded ? medicines : medicinesMock);
+    setDentists(isLoaded ? dentists : dentistsMock);
     setIsLoaded(true);
-  }, [medicines]);
+  }, [dentists]);
 
   // Handle submit add 1 object
   const submitAdd = (newValues) => {
     console.log(newValues);
-    setMedicines((preMed) => [...preMed, newValues]);
+    setDentists((preDen) => [...preDen, newValues]);
     setOpenDialog(false);
   };
 
   // Handle delete selected
   const deleteSelected = () => {
     setOpenDialog(false);
-    if (!selectedMedicines) return;
-    selectedMedicines.forEach((med) => handleDelete(med));
+    if (!selectedDentists) return;
+    selectedDentists.forEach((den) => handleDelete(den));
   };
 
   // Handle submit edit 1 object
   const handleEdit = (newValues) => {
-    setMedicines((preMed) =>
-      preMed.map((medicine) =>
-        medicine.id === newValues.id ? newValues : medicine,
+    setDentists((preDen) =>
+      preDen.map((dentist) =>
+        dentist.phone === newValues.phone ? newValues : dentist,
       ),
     );
   };
 
   // Handle submit delete 1 object
-  const handleDelete = (id) => {
-    setMedicines((preMed) => preMed.filter((medicine) => medicine.id !== id));
+  const handleDelete = (phone) => {
+    setDentists((preDen) => preDen.filter((dentist) => dentist.phone !== phone));
   };
 
   const submitEdit = (newValues, formState) => {
     if (formState === "edit") {
       handleEdit(newValues);
     } else {
-      handleDelete(newValues.id);
+      handleDelete(newValues.phone);
     }
 
     setOpenDialogEdit(false);
@@ -88,23 +88,23 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
   // handle dialog edit
   const [openDialogEdit, setOpenDialogEdit] = useState(false);
-  const [editedMedicine, setEditedMedicine] = useState(null);
+  const [editedDentist, setEditedDentist] = useState(null);
 
   const attr1 = useProcessDialog({
-    id: "editMedicine",
+    id: "editDentist",
     title: "Chỉnh sửa thuốc",
     triggerValue: openDialogEdit,
     onClose: () => {
-      setEditedMedicine(null);
+      setEditedDentist(null);
 
       setOpenDialogEdit(false);
     },
   });
 
-  const handlePopUpEdit = (id) => {
-    const res = medicines.find((medicine) => medicine.id === id);
-
-    setEditedMedicine(res);
+  const handlePopUpEdit = (phone) => {
+    const res = dentists.find((dentist) => dentist.phone === phone);
+    
+    setEditedDentist(res);
 
     setOpenDialogEdit(true);
   };
@@ -115,7 +115,7 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
       <Dialog title={diaLogName} attr={attr}>
         {diaLogName === "Xoá" ? (
           <>
-            <p>Xoá các thuốc đã chọn?</p>
+            <p>Xoá các nha sĩ đã chọn?</p>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -141,8 +141,8 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
       </Dialog>
 
       {/* Dialog lines */}
-      <Dialog title={"Chỉnh sửa thuốc"} attr={attr1}>
-        <FormED editedMedicine={editedMedicine} submitEdit={submitEdit} />
+      <Dialog title={"Chỉnh sửa hồ sơ"} attr={attr1}>
+        <FormED editedDentist={editedDentist} submitEdit={submitEdit} />
       </Dialog>
 
       <div className="nav-table flex h-12 items-center rounded-tl-xl rounded-tr-xl bg-gray-400 px-4">
@@ -154,29 +154,28 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
           name="all"
           id="all"
         />
-        <p className="w-[10%] text-center">Mã thuốc</p>
-        <p className="w-1/5 text-left">Tên thuốc</p>
-        <p className="w-1/5 text-left">Chỉ định</p>
-        <p className="w-1/6 text-center">Giá (VNĐ)</p>
-        <p className="w-[10%] text-center">ĐV Tính</p>
-        <p className="w-1/6 text-center">Ngày hết hạn</p>
-        <p className="w-[10%] text-center">Số lượng tồn kho</p>
+        <p className="w-[15%] text-center">STT</p>
+        <p className="w-1/5 text-left">Họ và tên</p>
+        <p className="w-1/8 text-left">Ngày sinh</p>
+        <p className="w-1/6 text-center">Số điện thoại</p>
+        <p className="w-[30%] text-center">Địa chỉ</p>
       </div>
 
       <div className="h table w-full overflow-y-auto">
-        {currentMeds.map((medicine) => (
-          <Medicine
-            key={medicine.id}
-            medicine={medicine}
+        {currentDens.map((dentist,index) => (
+          <Dentist
+            key={index}
+            dentist={dentist}
+            index={index + 1}
             handleCheck={handleCheck}
-            selected={selectedMedicines.includes(medicine.id)}
+            selected={selectedDentists.includes(dentist.phone)}
             handlePopUpEdit={handlePopUpEdit}
           />
         ))}
         <div className="pagination__wrapper">
           <Pagination
-            totalItems={medicines.flat().length}
-            itemsPerPage={MEDS_PER_PAGE}
+            totalItems={dentists.flat().length}
+            itemsPerPage={DENS_PER_PAGE}
             currentPage={currentPage}
             onPageChange={(page) => setCurrentPage(page)}
           />

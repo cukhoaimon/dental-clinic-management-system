@@ -1,78 +1,78 @@
 import { Fragment, useState, useMemo, useEffect } from "react";
-import { Medicine } from "./Medicine";
+import { Schedule } from "./Schedule";
 import { Pagination } from "../../../common/Pagination";
-import { medicinesMock, MEDS_PER_PAGE } from "../../mocks/medicines";
+import {schedulesMock, SCHEDULES_PER_PAGE } from "../../mocks/schedules";
 import FormED from "./form-edit-delete";
 import FormAdd from "./form-add";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
 
 /* eslint-disable react/prop-types */
-export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
+export const ScheduleBoard = ({ attr, diaLogName, setOpenDialog }) => {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [medicines, setMedicines] = useState([]);
-  const [selectedMedicines, setSelectedMedicines] = useState([]);
+  const [schedules, setSchedules] = useState([]);
+  const [selectedSchedules, setSelectedSchedules] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const currentMeds = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * MEDS_PER_PAGE;
-    const lastPageIndex = firstPageIndex + MEDS_PER_PAGE;
-    return medicines.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage, medicines]);
+  const currentDens = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * SCHEDULES_PER_PAGE;
+    const lastPageIndex = firstPageIndex + SCHEDULES_PER_PAGE;
+    return schedules.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, schedules]);
 
   const handleCheckAll = () => {
     if (isCheckAll) {
-      setSelectedMedicines([]);
+      setSelectedSchedules([]);
     } else {
-      setSelectedMedicines(medicines.map((medicine) => medicine.id));
+      setSelectedSchedules(schedules.map((schedule) => schedule.id));
     }
 
     setIsCheckAll(!isCheckAll);
   };
 
   const handleCheck = (id) => {
-    if (selectedMedicines.includes(id)) {
-      setSelectedMedicines(
-        selectedMedicines.filter((medicineId) => medicineId !== id),
+    if (selectedSchedules.includes(id)) {
+      setSelectedSchedules(
+        selectedSchedules.filter((medicineId) => medicineId !== id),
       );
     } else {
-      setSelectedMedicines([...selectedMedicines, id]);
+      setSelectedSchedules([...selectedSchedules, id]);
     }
   };
 
   // load data
   useEffect(() => {
-    setMedicines(isLoaded ? medicines : medicinesMock);
+    setSchedules(isLoaded ? schedules : schedulesMock);
     setIsLoaded(true);
-  }, [medicines]);
+  }, [schedules, isLoaded]);
 
   // Handle submit add 1 object
   const submitAdd = (newValues) => {
     console.log(newValues);
-    setMedicines((preMed) => [...preMed, newValues]);
+    setSchedules((preDen) => [...preDen, newValues]);
     setOpenDialog(false);
   };
 
   // Handle delete selected
   const deleteSelected = () => {
     setOpenDialog(false);
-    if (!selectedMedicines) return;
-    selectedMedicines.forEach((med) => handleDelete(med));
+    if (!selectedSchedules) return;
+    selectedSchedules.forEach((schedule) => handleDelete(schedule));
   };
 
   // Handle submit edit 1 object
   const handleEdit = (newValues) => {
-    setMedicines((preMed) =>
-      preMed.map((medicine) =>
-        medicine.id === newValues.id ? newValues : medicine,
+    setSchedules((preDen) =>
+      preDen.map((schedule) =>
+        schedule.id === newValues.id ? newValues : schedule,
       ),
     );
   };
 
   // Handle submit delete 1 object
   const handleDelete = (id) => {
-    setMedicines((preMed) => preMed.filter((medicine) => medicine.id !== id));
+    setSchedules((preDen) => preDen.filter((schedule) => schedule.id !== id));
   };
 
   const submitEdit = (newValues, formState) => {
@@ -88,23 +88,23 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
   // handle dialog edit
   const [openDialogEdit, setOpenDialogEdit] = useState(false);
-  const [editedMedicine, setEditedMedicine] = useState(null);
+  const [editedSchedule, setEditedSchedule] = useState(null);
 
   const attr1 = useProcessDialog({
-    id: "editMedicine",
-    title: "Chỉnh sửa thuốc",
+    id: "editSchedule",
+    title: "Chỉnh sửa lịch",
     triggerValue: openDialogEdit,
     onClose: () => {
-      setEditedMedicine(null);
+      setEditedSchedule(null);
 
       setOpenDialogEdit(false);
     },
   });
 
   const handlePopUpEdit = (id) => {
-    const res = medicines.find((medicine) => medicine.id === id);
-
-    setEditedMedicine(res);
+    const res = schedules.find((schedule) => schedule.id === id);
+    
+    setEditedSchedule(res);
 
     setOpenDialogEdit(true);
   };
@@ -115,7 +115,7 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
       <Dialog title={diaLogName} attr={attr}>
         {diaLogName === "Xoá" ? (
           <>
-            <p>Xoá các thuốc đã chọn?</p>
+            <p>Xoá các lịch đã chọn?</p>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -141,8 +141,8 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
       </Dialog>
 
       {/* Dialog lines */}
-      <Dialog title={"Chỉnh sửa thuốc"} attr={attr1}>
-        <FormED editedMedicine={editedMedicine} submitEdit={submitEdit} />
+      <Dialog title={"Chỉnh sửa lịch hẹn"} attr={attr1}>
+        <FormED editedSchedule={editedSchedule} submitEdit={submitEdit} />
       </Dialog>
 
       <div className="nav-table flex h-12 items-center rounded-tl-xl rounded-tr-xl bg-gray-400 px-4">
@@ -154,29 +154,28 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
           name="all"
           id="all"
         />
-        <p className="w-[10%] text-center">Mã thuốc</p>
-        <p className="w-1/5 text-left">Tên thuốc</p>
-        <p className="w-1/5 text-left">Chỉ định</p>
-        <p className="w-1/6 text-center">Giá (VNĐ)</p>
-        <p className="w-[10%] text-center">ĐV Tính</p>
-        <p className="w-1/6 text-center">Ngày hết hạn</p>
-        <p className="w-[10%] text-center">Số lượng tồn kho</p>
+        <p className="w-[15%] text-center">Mã lịch hẹn</p>
+        <p className="w-1/3 text-left">Bệnh nhân</p>
+        <p className="w-1/5 text-center">Ngày đăng ký</p>
+        <p className="w-1/5 text-center">Ngày hẹn</p>
+        <p className="text-center">Trạng thái</p>
       </div>
 
       <div className="h table w-full overflow-y-auto">
-        {currentMeds.map((medicine) => (
-          <Medicine
-            key={medicine.id}
-            medicine={medicine}
+        {currentDens.map((schedule,index) => (
+          <Schedule
+            key={index}
+            schedule={schedule}
+            index={index + 1}
             handleCheck={handleCheck}
-            selected={selectedMedicines.includes(medicine.id)}
+            selected={selectedSchedules.includes(schedule.id)}
             handlePopUpEdit={handlePopUpEdit}
           />
         ))}
         <div className="pagination__wrapper">
           <Pagination
-            totalItems={medicines.flat().length}
-            itemsPerPage={MEDS_PER_PAGE}
+            totalItems={schedules.flat().length}
+            itemsPerPage={SCHEDULES_PER_PAGE}
             currentPage={currentPage}
             onPageChange={(page) => setCurrentPage(page)}
           />
