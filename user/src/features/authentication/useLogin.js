@@ -17,7 +17,7 @@ export function useLogin() {
         role: "authenticated",
       });
 
-      navigate("/", { replace: true });
+      navigate("/profile", { replace: true });
     },
     onError: (err) => {
       console.log("ERROR", err);
