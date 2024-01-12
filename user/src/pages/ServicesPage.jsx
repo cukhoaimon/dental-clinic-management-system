@@ -1,4 +1,4 @@
-import Services from "../features/home/Services";
+import Services from "../ui/Services";
 
 export default function ServicesPage() {
   return <Services title="Dịch Vụ" />;

@@ -1,5 +1,5 @@
 import Carousel from "../features/home/Carousel";
-import Services from "../features/home/Services";
+import Services from "../ui/Services";
 import AboutUs from "../features/home/AboutUs";
 
 function Home() {
