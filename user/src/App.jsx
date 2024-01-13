@@ -11,6 +11,9 @@ import MedicalRecord from "./pages/MedicalRecord";
 
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
+import Doctors from "./pages/Doctors";
+import About from "./pages/About";
+import ServicesPage from "./pages/ServicesPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,10 +39,14 @@ export default function App() {
             <Route path="/booking" element={<Booking />} />
             <Route path="/medicalrecord" element={<MedicalRecord />} />
           </Route>
-
-          <Route exact path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route element={<AppLayout />}>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/doctors" element={<Doctors />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<ServicesPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
       <Toaster

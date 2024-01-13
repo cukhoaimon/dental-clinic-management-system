@@ -1,10 +1,14 @@
-import { Outlet } from "react-router-dom";
+import Carousel from "../features/home/Carousel";
+import Services from "../ui/Services";
+import AboutUs from "../features/home/AboutUs";
 
 function Home() {
   return (
-    <div>
-      <Outlet />
-    </div>
+    <>
+      <Carousel />
+      <Services />
+      <AboutUs />
+    </>
   );
 }
 
