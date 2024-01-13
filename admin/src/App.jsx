@@ -5,9 +5,15 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import PageNotFound from "./pages/PageNotFound";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+
+import { Panel_employee } from "./features/panel_employee/Panel_employee";
+import {Panel} from "./features/panel/Panel";
+import { Panel_dentist } from "./features/panel_dentist/Panel_dentist";
 
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
+import Bill from "./features/bill_page/Bill";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,8 +40,15 @@ function App() {
             {/* Some route page that just use for admin */}
           </Route>
 
-          <Route path="/" element={<Home />} />
-
+          <Route path="/" element={<Home />}>
+            <Route path="admin" element={<Panel />} />
+            <Route path="dentist" element={<Panel_dentist />} />
+            <Route path="employee">
+              <Route index element={<Panel_employee />} />
+              <Route path="bills/:id" element={<Bill />} />
+            </Route>
+          </Route>
+          <Route path="/login" element={<Login />} />
           {/* Another route add from here */}
 
           {/* All invalid route will render PageNotFound page */}

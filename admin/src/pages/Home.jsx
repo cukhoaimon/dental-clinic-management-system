@@ -1,14 +1,22 @@
-import { toast } from "react-hot-toast";
-
-const notify = () => toast.success("Hello World");
+import { Outlet, useLocation } from "react-router-dom";
+import { Navigate } from "react-router";
 
 function Home() {
+  // TODO: handle role here
+  const role = "employee";
+
+  // Get current location
+  const location = useLocation();
+  const regexPattern = /^\/employee\/bills\/\d+$/;
+
   return (
-    <div className="flex w-auto justify-center pt-32	">
-      <button onClick={notify} className="border-8 bg-orange-400 p-20">
-        Click thử xem
-      </button>
-    </div>
+    <>
+      <Outlet />
+      {role === "admin" && <Navigate to="/admin" />}
+      {role === "dentist" && <Navigate to="/dentist" />}
+      {role === "employee" && regexPattern.test(location.pathname) && <Navigate to={location.pathname} />}
+      {role === "employee" && <Navigate to="/employee" />}
+    </>
   );
 }
 
