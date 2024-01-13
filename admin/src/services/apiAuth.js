@@ -1,13 +1,10 @@
-import axios from "axios";
+import axiosClient from "./axiosClient";
 
-const options = {
-  method: "GET",
-  url: " https://api.country.is/9.9.9.9 ",
-};
-
-async function login() {
-  const respone = await axios.request(options);
-  console.log(respone.data);
+export const login = async (data) => {
+  try {
+    const res = await axiosClient.post("admin/login", data);
+    return res;
+  } catch (err) {
+    return err.response;
+  }
 }
-
-export { login };
