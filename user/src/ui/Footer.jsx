@@ -1,10 +1,8 @@
-import decorate1 from "/decorate1.svg";
-import decorate2 from "/decorate2.svg";
+import footerDecor from "/footerDecor.svg";
 function Footer() {
   return (
-    <div className="mt-10">
-      <img className="absolute" src={decorate2}></img>
-      <img src={decorate1}></img>
+    <div className="mt-20">
+      <img src={footerDecor}></img>
     </div>
   );
 }
