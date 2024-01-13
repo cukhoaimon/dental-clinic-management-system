@@ -1,9 +1,9 @@
-const express = require('express')
+const express = require("express");
 
-const medicineController = require('../controllers/medicineController');
+const medicineController = require("../controllers/medicineController");
 
 const router = express.Router();
 
-router.route('/').get(medicineController.LayTatCaThuoc)
+router.route("/").get(medicineController.getMedicines);
 
 module.exports = router;

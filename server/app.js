@@ -25,6 +25,7 @@ app.use('/medicines', require('./routes/medicineRoutes'));
 // FOR ADMIN
 app.use('/users', require('./routes/userRoutes'));
 app.use('/admin', require('./routes/adminRoutes'));
-app.use('/dentist', require('./routes/dentistRoutes'));
+app.use('/dentists', require('./routes/dentistRoutes'));
+app.use('/employees', require('./routes/employeeRoutes'));
 
 module.exports = app;

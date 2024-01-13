@@ -1,11 +1,13 @@
 const pool = require("../utils/db");
 
 module.exports = {
-  getMedicines: async (req, res) => {
+  getEmployees: async (req, res) => {
     try {
       await pool.connect();
 
-      const result = await pool.query(`SELECT * FROM THUOC`);
+      const result = await pool.query(
+        `SELECT * FROM NGUOI_DUNG WHERE VAI_TRO = 'NHAN_VIEN'`
+      );
 
       res.status(200).json({
         status: "success",

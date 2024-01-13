@@ -1,11 +1,12 @@
 import { Fragment, useState, useMemo, useEffect } from "react";
 import { Employee } from "./Employee";
 import { Pagination } from "../../../common/Pagination";
-import { employeesMock, EMPS_PER_PAGE } from "../../mocks/employees";
+import { EMPS_PER_PAGE } from "../../mocks/employees";
 import FormED from "./form-edit-delete";
 import FormAdd from "./form-add";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
+import axiosClient from "../../../../services/axiosClient";
 
 /* eslint-disable react/prop-types */
 export const EmployeeBoard = ({ attr, diaLogName, setOpenDialog }) => {
@@ -43,9 +44,13 @@ export const EmployeeBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
   // load data
   useEffect(() => {
-    setEmployees(isLoaded ? employees : employeesMock);
-    setIsLoaded(true);
-  }, [employees]);
+    async function fetchData() {
+      const res = await axiosClient.get("employees");
+      setEmployees(isLoaded ? employees : res.data);
+      setIsLoaded(true);
+    }
+    fetchData();
+  }, []);
 
   // Handle submit add 1 object
   const submitAdd = (newValues) => {

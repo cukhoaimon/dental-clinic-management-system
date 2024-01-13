@@ -1,11 +1,12 @@
 import { Fragment, useState, useMemo, useEffect } from "react";
 import { Dentist } from "./Dentist";
 import { Pagination } from "../../../common/Pagination";
-import { dentistsMock, DENS_PER_PAGE } from "../../mocks/dentists";
+import { DENS_PER_PAGE } from "../../mocks/dentists";
 import FormED from "./form-edit-delete";
 import FormAdd from "./form-add";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
+import axiosClient from "../../../../services/axiosClient";
 
 /* eslint-disable react/prop-types */
 export const DentistBoard = ({ attr, diaLogName, setOpenDialog }) => {
@@ -43,9 +44,13 @@ export const DentistBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
   // load data
   useEffect(() => {
-    setDentists(isLoaded ? dentists : dentistsMock);
-    setIsLoaded(true);
-  }, [dentists]);
+    async function fetchData() {
+      const res = await axiosClient.get("dentists");
+      setDentists(isLoaded ? dentists : res.data);
+      setIsLoaded(true);
+    }
+    fetchData();
+  }, []);
 
   // Handle submit add 1 object
   const submitAdd = (newValues) => {
@@ -164,11 +169,11 @@ export const DentistBoard = ({ attr, diaLogName, setOpenDialog }) => {
       <div className="h table w-full overflow-y-auto">
         {currentDens.map((dentist,index) => (
           <Dentist
-            key={index}
+            key={dentist.SDT}
             dentist={dentist}
             index={index + 1}
             handleCheck={handleCheck}
-            selected={selectedDentists.includes(dentist.phone)}
+            selected={selectedDentists.includes(dentist.SDT)}
             handlePopUpEdit={handlePopUpEdit}
           />
         ))}

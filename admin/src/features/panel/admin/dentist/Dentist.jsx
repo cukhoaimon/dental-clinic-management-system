@@ -1,6 +1,8 @@
+import formatDate from "../../../../utils/formatDate";
+
 /* eslint-disable react/prop-types */
 export const Dentist = ({
-  dentist: { name, dob, phone, address },
+  dentist: { HO_TEN: name, NGAY_SINH: dob, SDT: phone, DIA_CHI: address },
   index,
   // dentist,
   selected,
@@ -23,7 +25,7 @@ export const Dentist = ({
         />
         <p className="w-[15%] text-center">{index}</p>
         <p className="w-1/5 text-left">BS. {name}</p>
-        <p className="w-1/8 text-left">{dob}</p>
+        <p className="w-1/8 text-left">{formatDate(dob)}</p>
         <p className="w-1/6 text-center">{phone}</p>
         <p className="w-[30%] text-center">{address}</p>
         {/* <p className="w-1/6 text-center">{expDay}</p>
