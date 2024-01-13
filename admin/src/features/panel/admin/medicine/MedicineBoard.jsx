@@ -7,6 +7,8 @@ import FormED from "./form-edit-delete";
 import FormAdd from "./form-add";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
+import formatDate from "../../../../utils/formatDate";
+import { isFormat } from "../../../../utils/formatDate";
 
 /* eslint-disable react/prop-types */
 export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
@@ -43,20 +45,25 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
   };
 
   // load data
-  useEffect( () => {
+  useEffect(() => {
     async function fetchData() {
       const res = await axiosClient.get("medicines");
       setMedicines(isLoaded ? medicines : res.data);
+      // setMedicines((preMed) =>
+      //   preMed.map((medicine) => {
+      //     medicine.NGAY_HET_HAN = formatDate(medicine.NGAY_HET_HAN);
+      //   }),
+      // );
+      // console.log(res.data);
       setIsLoaded(true);
     }
 
     fetchData();
-    
   }, []);
 
   // Handle submit add 1 object
   const submitAdd = (newValues) => {
-    console.log(newValues);
+    // console.log(newValues);
     setMedicines((preMed) => [...preMed, newValues]);
     setOpenDialog(false);
   };
@@ -69,12 +76,23 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
   };
 
   // Handle submit edit 1 object
-  const handleEdit = (newValues) => {
-    setMedicines((preMed) =>
-      preMed.map((medicine) =>
-        medicine.id === newValues.id ? newValues : medicine,
-      ),
-    );
+  const handleEdit = async (newValues) => {
+    // console.log(newValues);
+    await axiosClient
+      .patch(`medicines/${newValues.MA_THUOC}`, newValues)
+      .then(() =>
+        setMedicines((preMed) =>
+          preMed.map((medicine) =>
+            medicine.MA_THUOC === newValues.MA_THUOC ? newValues : medicine,
+          ),
+        ),
+      )
+      .catch((err) => console.log(err));
+    // setMedicines((preMed) =>
+    //   preMed.map((medicine) =>
+    //     medicine.MA_THUOC === newValues.MA_THUOC ? newValues : medicine,
+    //   ),
+    // );
   };
 
   // Handle submit delete 1 object
@@ -109,8 +127,12 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
   });
 
   const handlePopUpEdit = (id) => {
-    const res = medicines.find((medicine) => medicine.id === id);
-
+    const res = medicines.find((medicine) => medicine.MA_THUOC === id);
+    // console.log('RES',res);
+    // if (typeof res.NGAY_HET_HAN === 'string')
+    //   res.NGAY_HET_HAN = formatDate(res.NGAY_HET_HAN);
+    if (!isFormat(res.NGAY_HET_HAN)) res.NGAY_HET_HAN = formatDate(res.NGAY_HET_HAN);
+    // console.log(typeof (res.NGAY_HET_HAN));
     setEditedMedicine(res);
 
     setOpenDialogEdit(true);
@@ -144,7 +166,9 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
               </div>
             </form>
           </>
-        ) : <FormAdd submitAdd={submitAdd}/>}
+        ) : (
+          <FormAdd submitAdd={submitAdd} />
+        )}
       </Dialog>
 
       {/* Dialog lines */}

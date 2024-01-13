@@ -1,14 +1,15 @@
 import { useState, useLayoutEffect } from "react";
-/* eslint-disable react/prop-types */
+// import formatDate from "../../../../utils/formatDate";
 
+/* eslint-disable react/prop-types */
 export default function FormED({ editedMedicine, submitEdit }) {
   const defaultFormValues = {
-    name: "",
-    usage: "",
-    price: "",
-    unit: "",
-    expDay: "",
-    inventoryQuantity: "",
+    TEN_THUOC: "",
+    CHI_DINH: "",
+    GIA: "",
+    DON_VI_TINH: "",
+    NGAY_HET_HAN: "",
+    SO_LUONG_TON_KHO: "",
   };
 
   const [formValues, setFormValues] = useState(defaultFormValues);
@@ -29,7 +30,7 @@ export default function FormED({ editedMedicine, submitEdit }) {
   }, [editedMedicine]);
 
   const checkValid = () => {
-    if (!formValues.name || !formValues.usage || !formValues.price || !formValues.unit || !formValues.expDay || !formValues.inventoryQuantity) {
+    if (!formValues.TEN_THUOC) {
       return false;
     }
     return true;
@@ -63,10 +64,10 @@ export default function FormED({ editedMedicine, submitEdit }) {
           <input
             id="name"
             type="text"
-            name="name"
+            name="TEN_THUOC"
             disabled={formState !== "edit"}
             className=" input-field"
-            value={formValues.name}
+            value={formValues.TEN_THUOC}
             onChange={(e) => handleChange(e)}
           />
         </div>
@@ -75,10 +76,10 @@ export default function FormED({ editedMedicine, submitEdit }) {
           <input
             id="usage"
             type="text"
-            name="usage"
+            name="CHI_DINH"
             disabled={formState !== "edit"}
             className=" input-field"
-            value={formValues.usage}
+            value={formValues.CHI_DINH}
             onChange={(e) => handleChange(e)}
           />
         </div>
@@ -87,10 +88,10 @@ export default function FormED({ editedMedicine, submitEdit }) {
           <input
             id="price"
             type="text"
-            name="price"
+            name="GIA"
             disabled={formState !== "edit"}
             className=" input-field"
-            value={formValues.price}
+            value={formValues.GIA}
             onChange={(e) => handleChange(e)}
           />
         </div>
@@ -99,10 +100,10 @@ export default function FormED({ editedMedicine, submitEdit }) {
           <input
             id="unit"
             type="text"
-            name="unit"
+            name="DON_VI_TINH"
             disabled={formState !== "edit"}
             className="input-field"
-            value={formValues.unit}
+            value={formValues.DON_VI_TINH}
             onChange={(e) => handleChange(e)}
           />
         </div>
@@ -111,10 +112,10 @@ export default function FormED({ editedMedicine, submitEdit }) {
           <input
             id="expDay"
             type="text"
-            name="expDay"
+            name="NGAY_HET_HAN"
             disabled={formState !== "edit"}
             className="input-field"
-            value={formValues.expDay}
+            value={formValues.NGAY_HET_HAN}
             onChange={(e) => handleChange(e)}
           />
         </div>
@@ -123,10 +124,10 @@ export default function FormED({ editedMedicine, submitEdit }) {
           <input
             id="inventoryQuantity"
             type="text"
-            name="inventoryQuantity"
+            name="SO_LUONG_TON_KHO"
             disabled={formState !== "edit"}
             className="input-field"
-            value={formValues.inventoryQuantity}
+            value={formValues.SO_LUONG_TON_KHO}
             onChange={(e) => handleChange(e)}
           />
         </div>

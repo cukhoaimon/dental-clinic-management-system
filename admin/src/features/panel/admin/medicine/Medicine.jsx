@@ -1,4 +1,4 @@
-import formatDate from "../../../../utils/formatDate";
+import formatDate, { isFormat } from "../../../../utils/formatDate";
 
 /* eslint-disable react/prop-types */
 export const Medicine = ({
@@ -28,7 +28,7 @@ export const Medicine = ({
         <p className="w-1/5 text-left">{usage}</p>
         <p className="w-1/6 text-center">{price}</p>
         <p className="w-[10%] text-center">{unit}</p>
-        <p className="w-1/6 text-center">{formatDate(expDay)}</p>
+        <p className="w-1/6 text-center">{isFormat(expDay) ? expDay : formatDate(expDay)}</p>
         <p className="w-[10%] text-center">{inventoryQuantity}</p>
       </div>
     </>
