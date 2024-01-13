@@ -1,7 +1,8 @@
 import { Fragment, useState, useMemo, useEffect } from "react";
 import { Medicine } from "./Medicine";
 import { Pagination } from "../../../common/Pagination";
-import { medicinesMock, MEDS_PER_PAGE } from "../../mocks/medicines";
+import { MEDS_PER_PAGE } from "../../mocks/medicines";
+import axiosClient from "../../../../services/axiosClient";
 import FormED from "./form-edit-delete";
 import FormAdd from "./form-add";
 import Dialog from "../../../common/Dialog";
@@ -42,10 +43,16 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
   };
 
   // load data
-  useEffect(() => {
-    setMedicines(isLoaded ? medicines : medicinesMock);
-    setIsLoaded(true);
-  }, [medicines]);
+  useEffect( () => {
+    async function fetchData() {
+      const res = await axiosClient.get("medicines");
+      setMedicines(isLoaded ? medicines : res.data);
+      setIsLoaded(true);
+    }
+
+    fetchData();
+    
+  }, []);
 
   // Handle submit add 1 object
   const submitAdd = (newValues) => {
@@ -166,10 +173,10 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
       <div className="h table w-full overflow-y-auto">
         {currentMeds.map((medicine) => (
           <Medicine
-            key={medicine.id}
+            key={medicine.MA_THUOC}
             medicine={medicine}
             handleCheck={handleCheck}
-            selected={selectedMedicines.includes(medicine.id)}
+            selected={selectedMedicines.includes(medicine.MA_THUOC)}
             handlePopUpEdit={handlePopUpEdit}
           />
         ))}

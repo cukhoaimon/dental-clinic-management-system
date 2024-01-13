@@ -3,7 +3,7 @@ import { Navigate } from "react-router";
 
 function Home() {
   // TODO: handle role here
-  const role = "employee";
+  const role = "admin";
 
   // Get current location
   const location = useLocation();

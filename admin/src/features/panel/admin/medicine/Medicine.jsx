@@ -1,6 +1,9 @@
+import formatDate from "../../../../utils/formatDate";
+
 /* eslint-disable react/prop-types */
 export const Medicine = ({
-  medicine: { id, name, usage, price, unit, expDay, inventoryQuantity },
+  medicine: { MA_THUOC: id, TEN_THUOC: name, CHI_DINH: usage, GIA: price, DON_VI_TINH: unit,
+    NGAY_HET_HAN: expDay, SO_LUONG_TON_KHO: inventoryQuantity },
   // medicine,
   selected,
   handleCheck,
@@ -25,7 +28,7 @@ export const Medicine = ({
         <p className="w-1/5 text-left">{usage}</p>
         <p className="w-1/6 text-center">{price}</p>
         <p className="w-[10%] text-center">{unit}</p>
-        <p className="w-1/6 text-center">{expDay}</p>
+        <p className="w-1/6 text-center">{formatDate(expDay)}</p>
         <p className="w-[10%] text-center">{inventoryQuantity}</p>
       </div>
     </>
