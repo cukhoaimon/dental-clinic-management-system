@@ -39,7 +39,6 @@ export default function App() {
             <Route path="/booking" element={<Booking />} />
             <Route path="/medicalrecord" element={<MedicalRecord />} />
           </Route>
-
           <Route element={<AppLayout />}>
             <Route exact path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
