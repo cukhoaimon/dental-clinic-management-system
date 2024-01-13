@@ -1,19 +1,33 @@
 import { useForm } from "react-hook-form";
+import toast  from 'react-hot-toast' 
+import { login } from "../../services/apiAuth";
+import { Navigate } from "react-router-dom";
+import { useState } from "react";
 
 function LoginForm() {
   const {
     register,
     handleSubmit,
-    watch,
     // formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
-  console.log(watch("phone")); // watch input value by passing the name of it
+  const [isLogged, setIsLogged] = useState(false);
+
+  const onSubmit = async (data) => {
+    const res = await login(data);
+    if (res.status === 'success') {
+      toast.success('Đăng nhập thành công');
+      localStorage.setItem('role', res.role);
+      setIsLogged(true);
+    } else {
+      toast.error('Đăng nhập thất bại');
+    }
+  };
+
 
   return (
     <>
-      {/* <h1>Login Form</h1> */}
+      {isLogged && <Navigate to="/" />}
       <section className="w-screen">
         <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
           <div className="w-full rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0">
