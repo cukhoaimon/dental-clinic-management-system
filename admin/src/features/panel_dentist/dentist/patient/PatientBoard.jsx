@@ -1,22 +1,21 @@
 import { Fragment, useState, useMemo, useEffect } from "react";
 import { Patient } from "./Patient";
 import { Pagination } from "../../../common/Pagination";
-import { patientsMock, PATIENTS_PER_PAGE } from "../../mocks/patients";
-import FormED from "./form-edit-delete";
-import FormAdd from "./form-add";
+import { PATIENTS_PER_PAGE } from "../../mocks/patients";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
 import PatientRecord from "./patient-records";
+import { getAllPatients, getPatientRecord } from "../../../../services/apiDentist";
 
 /* eslint-disable react/prop-types */
-export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
+export const PatientBoard = () => {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [patients, setPatients] = useState([]);
   const [selectedPatients, setSelectedPatients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const currentDens = useMemo(() => {
+  const currentPatients = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PATIENTS_PER_PAGE;
     const lastPageIndex = firstPageIndex + PATIENTS_PER_PAGE;
     return patients.slice(firstPageIndex, lastPageIndex);
@@ -26,7 +25,7 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
     if (isCheckAll) {
       setSelectedPatients([]);
     } else {
-      setSelectedPatients(patients.map((patient) => patient.phone));
+      setSelectedPatients(patients.map((patient) => patient.SDT));
     }
 
     setIsCheckAll(!isCheckAll);
@@ -44,71 +43,14 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
   // load data
   useEffect(() => {
-    setPatients(isLoaded ? patients : patientsMock);
-    setIsLoaded(true);
-  }, [patients, isLoaded]);
-
-  // Handle submit add 1 object
-  const submitAdd = (newValues) => {
-    console.log(newValues);
-    setPatients((preDen) => [...preDen, newValues]);
-    setOpenDialog(false);
-  };
-
-  // Handle delete selected
-  const deleteSelected = () => {
-    setOpenDialog(false);
-    if (!selectedPatients) return;
-    selectedPatients.forEach((patient) => handleDelete(patient));
-  };
-
-  // Handle submit edit 1 object
-  const handleEdit = (newValues) => {
-    setPatients((preDen) =>
-      preDen.map((patient) =>
-        patient.phone === newValues.phone ? newValues : patient,
-      ),
-    );
-  };
-
-  // Handle submit delete 1 object
-  const handleDelete = (phone) => {
-    setPatients((preDen) => preDen.filter((patient) => patient.phone !== phone));
-  };
-
-  const submitEdit = (newValues, formState) => {
-    if (formState === "edit") {
-      handleEdit(newValues);
-    } else {
-      handleDelete(newValues.phone);
+    async function fetchData(){
+      const res = await getAllPatients();
+      setPatients(isLoaded ? patients : res.data);
+      setIsLoaded(true);
     }
+    fetchData();
+  }, []);
 
-    setOpenDialogEdit(false);
-    // console.log("submit edit", newValues);
-  };
-
-  // handle dialog edit
-  const [openDialogEdit, setOpenDialogEdit] = useState(false);
-  const [editedPatient, setEditedPatient] = useState(null);
-
-  const attr1 = useProcessDialog({
-    id: "editPatient",
-    title: "Chỉnh sửa hồ sơ",
-    triggerValue: openDialogEdit,
-    onClose: () => {
-      setEditedPatient(null);
-
-      setOpenDialogEdit(false);
-    },
-  });
-
-  const handlePopUpEdit = (phone) => {
-    const res = patients.find((patient) => patient.phone === phone);
-    
-    setEditedPatient(res);
-
-    setOpenDialogEdit(true);
-  };
 
    // handle dialog patient records  
    const [openDialogPatientRecords, setopenDialogPatientRecords] = useState(false);
@@ -125,10 +67,12 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
      },
    });
 
-    const handlePopUpPatientRecords = (phone) => {
-      const res = patients.find((patient) => patient.phone === phone);
-      
-      setPatientRecords(res);
+    const handlePopUpPatientRecords = async (phone) => {
+      const res = patients.find((patient) => patient.SDT === phone);
+
+      const patientRecord = await getPatientRecord(res.SDT);
+
+      setPatientRecords(patientRecord.data);
   
       setopenDialogPatientRecords(true);
     }
@@ -137,39 +81,6 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
   return (
     <Fragment>
-      {/* Dialog top */}
-      <Dialog title={diaLogName} attr={attr}>
-        {diaLogName === "Xoá" ? (
-          <>
-            <p>Xoá các bệnh nhân đã chọn?</p>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                deleteSelected();
-              }}
-            >
-              <div className="inline-flex w-full justify-end pt-4">
-                <button
-                  className="btn"
-                  onClick={() => {
-                    setOpenDialog(false);
-                  }}
-                >
-                  Huỷ
-                </button>
-                <button className="btn-delete ml-2" type="submit">
-                  Xoá
-                </button>
-              </div>
-            </form>
-          </>
-        ) : <FormAdd submitAdd={submitAdd}/>}
-      </Dialog>
-
-      {/* Dialog lines */}
-      <Dialog title={"Chỉnh sửa hồ sơ"} attr={attr1}>
-        <FormED editedPatient={editedPatient} submitEdit={submitEdit} />
-      </Dialog>
 
       {/* Dialog patient records */}
       <Dialog title={"Lịch sử khám bệnh"} attr={attr2}>
@@ -194,14 +105,13 @@ export const PatientBoard = ({ attr, diaLogName, setOpenDialog }) => {
       </div>
 
       <div className="h table w-full overflow-y-auto">
-        {currentDens.map((patient,index) => (
+        {currentPatients.map((patient,index) => (
           <Patient
-            key={index}
+            key={patient.SDT}
             patient={patient}
             index={index + 1}
             handleCheck={handleCheck}
-            selected={selectedPatients.includes(patient.phone)}
-            handlePopUpEdit={handlePopUpEdit}
+            selected={selectedPatients.includes(patient.SDT)}
             handlePopUpPatientRecords={handlePopUpPatientRecords}
           />
         ))}

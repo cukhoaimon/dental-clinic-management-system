@@ -42,6 +42,7 @@ module.exports = {
             res.status(200).json({
                 status: "success",
                 message: "Đăng nhập thành công",
+                phone: req.body.phone,
                 role: result.output.VAI_TRO
             });
         } catch (err) {

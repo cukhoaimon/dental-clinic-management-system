@@ -42,4 +42,63 @@ module.exports = {
       });
     }
   },
+  getAllPatient: async (req, res) => {
+    try {
+      await pool.connect();
+
+      const result = await pool.query(
+        `SELECT DISTINCT ND.* FROM NGUOI_DUNG ND JOIN LAN_KHAM LK ON ND.SDT = LK.BENH_NHAN WHERE ND.VAI_TRO = 'KHACH_HANG'`
+      );
+
+      res.status(200).json({
+        status: "success",
+        data: result.recordset,
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+  },
+  getPatientRecord: async (req, res) => {
+    try {
+      await pool.connect();
+
+      const result = await pool
+        .request()
+        .input("SDT", req.params.phone)
+        .output("message")
+        .execute(`sp_XemHoSoBenhNhan`);
+
+      res.status(200).json({
+        status: "success",
+        data: result.recordset,
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+  },
+  getAppointments: async (req, res) => {
+    try {
+      await pool.connect();
+
+      const result = await pool.query(
+        `SELECT LH.*, ND.HO_TEN AS TEN_BENH_NHAN FROM LICH_HEN LH JOIN NGUOI_DUNG ND ON LH.BENH_NHAN = ND.SDT WHERE LH.NHA_SI = '${req.params.phone}' ORDER BY LH.NGAY_HEN DESC`
+      );
+
+      res.status(200).json({
+        status: "success",
+        data: result.recordset,
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+  } 
 };
