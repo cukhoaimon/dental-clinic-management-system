@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react"
 import { getAllMedicines, getMedicalExamination, prescribeMedication } from "../../services/apiDentist"
 import formatDate from "../../utils/formatDate"
+import toast from "react-hot-toast"
 
 
 const MedicalExamination = () => {
@@ -14,13 +15,42 @@ const MedicalExamination = () => {
     const [data, setData] = useState(null)
 
     const handleAddMedicine = () => {
-        console.log(newMedicines);
+        // check if there is any medicine not selected
+        const isExist = newMedicines.find((medicine) => medicine.MA_THUOC === undefined)
+
+        if (isExist){
+            toast.error("Vui lòng chọn thuốc trước khi thêm mới")
+            return
+        }
+
         setNewMedicines((prev) => {
             return [
                 ...prev,
-                {}
+                {
+                    MA_THUOC: undefined,
+                    quantity: 0,
+                }
             ]
         })
+    }
+
+    const handleCheckValidNewMedicines = () => {
+        const isExist = newMedicines.find((medicine) => medicine.MA_THUOC === undefined)
+
+        if (isExist){
+            toast.error("Vui lòng chọn thuốc trước khi lưu")
+            return false
+        }
+
+        const isQuantityValid = newMedicines.find((medicine) => medicine.quantity === 0)
+
+        if (isQuantityValid){
+            toast.error("Vui lòng nhập số lượng thuốc trước khi lưu")
+            return false
+        }
+
+        return true
+    
     }
 
     useEffect(() => {
@@ -45,6 +75,10 @@ const MedicalExamination = () => {
     }, [])
 
     const handleSave = async () => {
+        if (!handleCheckValidNewMedicines()){
+            return
+        }
+
         const id = window.location.pathname.split("/")[3]
         const promiseArr = newMedicines.map((medicine) => {
             return prescribeMedication({
@@ -58,7 +92,6 @@ const MedicalExamination = () => {
         
         window.location.reload()
     }
-
 
   return (
     <div className="py-10 px-40">
@@ -108,11 +141,11 @@ const MedicalExamination = () => {
                 })
             }
             {
-                newMedicines.map((medicine) => {
+                newMedicines.map((medicine, index) => {
                     // find medicine in data
                     let medicineData = medicines.find((item) => item.MA_THUOC === medicine.MA_THUOC)
                     return (
-                        <tr className="h-[40px]" key={medicine.MA_THUOC ? medicine.MA_THUOC : Date.now()}>
+                        <tr className="h-[40px]" key={medicine.MA_THUOC ? medicine.MA_THUOC : index}>
                             <td className="border px-4 py-2">
                                 <select className="w-full z-10" value={medicine.MA_THUOC} onChange={(e) => {
                                     const MA_THUOC = e.target.value
@@ -146,6 +179,7 @@ const MedicalExamination = () => {
                             <td className="border text-center px-4 py-2">
                                 <input className="w-full text-center" type="number" value={medicine?.quantity} onChange={(e) => {
                                     const quantity = e.target.value
+                                    
                                     setNewMedicines((prev) => {
                                         return prev.map((item) => {
                                             if (item?.MA_THUOC === medicine?.MA_THUOC){

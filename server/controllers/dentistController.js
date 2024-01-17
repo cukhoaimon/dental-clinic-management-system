@@ -136,8 +136,6 @@ module.exports = {
       .output("message")
       .execute(`sp_XemHoSoBenhNhan`);
 
-      console.log(patientRecords.recordset);
-
       const patientRecord = patientRecords.recordset.find((record) => {
         return record.MA_LAN_KHAM === parseInt(req.params.id);
       });
