@@ -8,3 +8,12 @@ export const getBill = async (id) => {
         return err.response;
     }
 }
+
+export const createBill = async (id) => {
+    try {
+        const res = await axiosClient.post(`bill/${id}`);
+        return res;
+    } catch (err) {
+        return err.response;
+    }
+}
