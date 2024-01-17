@@ -12,6 +12,7 @@ import { isFormat } from "../../../../utils/formatDate";
 import {
   getAllMedicines,
   editMedicine,
+  deleteMedicine,
 } from "../../../../services/apiMedicine";
 import { Backdrop, CircularProgress } from "@mui/material";
 
@@ -35,7 +36,7 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
     if (isCheckAll) {
       setSelectedMedicines([]);
     } else {
-      setSelectedMedicines(medicines.map((medicine) => medicine.id));
+      setSelectedMedicines(medicines.map((medicine) => medicine.MA_THUOC));
     }
 
     setIsCheckAll(!isCheckAll);
@@ -115,15 +116,36 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
   };
 
   // Handle submit delete 1 object
-  const handleDelete = (id) => {
-    setMedicines((preMed) => preMed.filter((medicine) => medicine.id !== id));
+  const handleDelete = async (id) => {
+    setLoading(true);
+    // console.log(id);
+    await deleteMedicine(id)
+      .then((res) => {
+        if (res.message === "Thành công") {
+          toast.success("Xoá thành công");
+          setMedicines((preMed) =>
+            preMed.filter((medicine) => medicine.MA_THUOC !== id),
+          );
+        } else {
+          toast.error(res.data.message);
+        }
+
+        // console.log('res',res);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        toast.error("Xoá thất bại");
+      })
+      .finally(() => setLoading(false));
+
+    // setMedicines((preMed) => preMed.filter((medicine) => medicine.id !== id));
   };
 
   const submitEdit = (newValues, formState) => {
     if (formState === "edit") {
       handleEdit(newValues);
     } else {
-      handleDelete(newValues.id);
+      handleDelete(newValues.MA_THUOC);
     }
 
     setOpenDialogEdit(false);

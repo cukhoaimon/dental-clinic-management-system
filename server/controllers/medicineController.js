@@ -49,12 +49,40 @@ module.exports = {
         .output('message')
         .execute(`sp_SuaThuoc`);
 
-        const output = result.output.message;
+      const output = result.output.message;
 
-        res.status(200).json({
-            status: "success",
-            message: output
-        });
+      res.status(200).json({
+        status: "success",
+        message: output
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+  },
+
+  deleteMedicine: async (req, res) => {
+    try {
+      await pool.connect();
+
+      const { id } = req.params;
+
+      // const result = await pool.query(`DELETE FROM THUOC WHERE MA_THUOC = ${id}`);
+
+      const result = await pool.request()
+        .input('id', id)
+        .output('message')
+        .execute(`sp_XoaThuoc`);
+
+      const output = result.output.message;
+
+      res.status(200).json({
+        status: "success",
+        message: output
+      });
+
     } catch (err) {
       res.status(500).json({
         status: "fail",

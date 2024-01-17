@@ -17,3 +17,12 @@ export const editMedicine = async (id, data) => {
         return err.response;
     }
 }
+
+export const deleteMedicine = async (id) => {
+    try {
+        const res = await axiosClient.delete(`medicines/${id}`);
+        return res;
+    } catch (err) {
+        return err.response;
+    }
+}
