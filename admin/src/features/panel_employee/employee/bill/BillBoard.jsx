@@ -122,11 +122,11 @@ export const BillBoard = () => {
           id="all"
         />
         <p className="w-[15%] text-center">Mã lần khám</p>
-        <p className="w-1/3 text-left">Bệnh nhân</p>
-        <p className="w-1/5 text-center">Ngày khám</p>
+        <p className="w-1/5 text-left">Bệnh nhân</p>
+        <p className="w-1/8 text-center">Ngày khám</p>
         <p className="w-1/5 text-center">Tổng tiền</p>
         <p className="w-1/5 text-center">Trạng thái</p>
-        <p className="text-center"></p>
+        <p className="text-center">Hành động</p>
       </div>
 
       <div className="h table w-full overflow-y-auto">

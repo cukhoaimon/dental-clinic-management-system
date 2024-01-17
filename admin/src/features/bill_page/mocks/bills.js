@@ -53,4 +53,5 @@ export const bill = {
         },
     ],
     total: 666666,
+    TRANG_THAI: 0,
 }
