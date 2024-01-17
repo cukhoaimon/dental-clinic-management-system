@@ -1,14 +1,19 @@
 import { Fragment, useState, useMemo, useEffect } from "react";
+import toast from "react-hot-toast";
 import { Medicine } from "./Medicine";
 import { Pagination } from "../../../common/Pagination";
 import { MEDS_PER_PAGE } from "../../mocks/medicines";
-import axiosClient from "../../../../services/axiosClient";
 import FormED from "./form-edit-delete";
 import FormAdd from "./form-add";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
 import formatDate from "../../../../utils/formatDate";
 import { isFormat } from "../../../../utils/formatDate";
+import {
+  getAllMedicines,
+  editMedicine,
+} from "../../../../services/apiMedicine";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 /* eslint-disable react/prop-types */
 export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
@@ -17,6 +22,8 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
   const [medicines, setMedicines] = useState([]);
   const [selectedMedicines, setSelectedMedicines] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [loading, setLoading] = useState(false);
 
   const currentMeds = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * MEDS_PER_PAGE;
@@ -47,7 +54,7 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
   // load data
   useEffect(() => {
     async function fetchData() {
-      const res = await axiosClient.get("medicines");
+      const res = await getAllMedicines();
       setMedicines(isLoaded ? medicines : res.data);
       // setMedicines((preMed) =>
       //   preMed.map((medicine) => {
@@ -78,16 +85,28 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
   // Handle submit edit 1 object
   const handleEdit = async (newValues) => {
     // console.log(newValues);
-    await axiosClient
-      .patch(`medicines/${newValues.MA_THUOC}`, newValues)
-      .then(() =>
-        setMedicines((preMed) =>
-          preMed.map((medicine) =>
-            medicine.MA_THUOC === newValues.MA_THUOC ? newValues : medicine,
-          ),
-        ),
-      )
-      .catch((err) => console.log(err));
+    setLoading(true);
+    await editMedicine(newValues.MA_THUOC, newValues)
+      .then((res) => {
+        if (res.message === "Thành công") {
+          toast.success("Lưu thành công");
+          setMedicines((preMed) =>
+            preMed.map((medicine) =>
+              medicine.MA_THUOC === newValues.MA_THUOC ? newValues : medicine,
+            ),
+          );
+        } else {
+          toast.error(res.data.message);
+        }
+
+        // console.log('res',res);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        toast.error("Lưu thất bại");
+      })
+      .finally(() => setLoading(false));
+
     // setMedicines((preMed) =>
     //   preMed.map((medicine) =>
     //     medicine.MA_THUOC === newValues.MA_THUOC ? newValues : medicine,
@@ -131,7 +150,8 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
     // console.log('RES',res);
     // if (typeof res.NGAY_HET_HAN === 'string')
     //   res.NGAY_HET_HAN = formatDate(res.NGAY_HET_HAN);
-    if (!isFormat(res.NGAY_HET_HAN)) res.NGAY_HET_HAN = formatDate(res.NGAY_HET_HAN);
+    if (!isFormat(res.NGAY_HET_HAN))
+      res.NGAY_HET_HAN = formatDate(res.NGAY_HET_HAN);
     // console.log(typeof (res.NGAY_HET_HAN));
     setEditedMedicine(res);
 
@@ -140,6 +160,12 @@ export const MedicineBoard = ({ attr, diaLogName, setOpenDialog }) => {
 
   return (
     <Fragment>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       {/* Dialog top */}
       <Dialog title={diaLogName} attr={attr}>
         {diaLogName === "Xoá" ? (
