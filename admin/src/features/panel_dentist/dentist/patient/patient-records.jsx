@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import formatDate from "../../../../utils/formatDate"
+import { Link } from "react-router-dom"
 
 const PatientRecord = ({patientRecords}) => {
   return (
@@ -8,6 +9,7 @@ const PatientRecord = ({patientRecords}) => {
         <table className="table-auto w-full mt-5">
           <thead className="text-white bg-blue-600">
             <tr>
+              <th className="border px-4 py-2">Chỉnh sửa</th>
               <th className="border px-4 py-2">Mã Lần Khám</th>
               <th className="border px-4 py-2">Ngày khám</th>
               <th className="border px-4 py-2">Nha sĩ thực hiện</th>
@@ -22,6 +24,11 @@ const PatientRecord = ({patientRecords}) => {
 
               return (
               <tr key={record.MA_LAN_KHAM} className={bgColor}>
+                <td className="border px-4 py-2 text-center">
+                  <Link to={`/dentist/examinations/${record.MA_LAN_KHAM}`}>
+                    &#9998;
+                  </Link>
+                </td>
                 <td className="border px-4 py-2 text-center">{record.MA_LAN_KHAM}</td>
                 <td className="border px-4 py-2">{formatDate(record.NGAY_KHAM)}</td>
                 <td className="border px-4 py-2">{record.NHA_SI_THUC_HIEN}</td>

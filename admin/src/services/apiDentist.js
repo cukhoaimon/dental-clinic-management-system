@@ -27,3 +27,39 @@ export const getAllAppointments = async () => {
         return err.response;
     }
 }
+
+export const getAllMedicines = async () => {
+    try {
+        const res = await axiosClient.get("dentists/medicines");
+        return res;
+    } catch (err) {
+        return err.response;
+    }
+}
+
+export const getMedicalExamination = async (id) => {
+    try {
+        const res = await axiosClient.get(`dentists/medical-examinations/${id}`);
+        return res;
+    } catch (err) {
+        return err.response;
+    }
+}
+
+export const prescribeMedication = async (data) => {
+    try {
+        const res = await axiosClient.post("dentists/prescribe-medication", data);
+        return res;
+    } catch (err) {
+        return err.response;
+    }
+}
+
+export const prescribeMedicationWait = async (data) => {
+    try {
+        const res = await axiosClient.post("dentists/prescribe-medication-wait", data);
+        return res;
+    } catch (err) {
+        return err.response;
+    }
+}
