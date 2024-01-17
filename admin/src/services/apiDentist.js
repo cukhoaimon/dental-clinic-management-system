@@ -54,3 +54,12 @@ export const prescribeMedication = async (data) => {
         return err.response;
     }
 }
+
+export const prescribeMedicationWait = async (data) => {
+    try {
+        const res = await axiosClient.post("dentists/prescribe-medication-wait", data);
+        return res;
+    } catch (err) {
+        return err.response;
+    }
+}

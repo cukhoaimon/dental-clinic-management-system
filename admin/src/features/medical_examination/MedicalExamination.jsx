@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useEffect } from "react"
-import { getAllMedicines, getMedicalExamination, prescribeMedication } from "../../services/apiDentist"
+import { getAllMedicines, getMedicalExamination, prescribeMedication, prescribeMedicationWait } from "../../services/apiDentist"
 import formatDate from "../../utils/formatDate"
 import toast from "react-hot-toast"
 
@@ -90,7 +90,30 @@ const MedicalExamination = () => {
 
         await Promise.all(promiseArr)
         
-        window.location.reload()
+        toast.success("Lưu thành công")
+
+        setTimeout(window.location.reload(), 4000)
+    }
+
+    const handleSaveWait = async () => {
+        if (!handleCheckValidNewMedicines()){
+            return
+        }
+
+        const id = window.location.pathname.split("/")[3]
+        const promiseArr = newMedicines.map((medicine) => {
+            return prescribeMedicationWait({
+                ma_lk: id,
+                ma_thuoc: medicine.MA_THUOC,
+                so_luong: medicine.quantity,
+            })
+        })
+
+        await Promise.all(promiseArr)
+
+        toast.success("Lưu thành công")
+
+        setTimeout(window.location.reload(), 4000)
     }
 
   return (
@@ -211,6 +234,7 @@ const MedicalExamination = () => {
       </div>
       <div className="w-full flex justify-evenly mt-10">
         <button onClick={handleSave} type="button" className="w-32 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Lưu</button>
+        <button onClick={handleSaveWait} type="button" className="w-32 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Lưu Chờ</button>
         <button onClick={() => { window.location.reload() }} type="button" className="w-32 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Huỷ</button>
       </div>
     </div>
