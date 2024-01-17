@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
+import formatDate from "../../../../utils/formatDate";
 
 export const Bill = ({
-  schedule: { id, name, dentalVisitDate, status },
+  schedule: { MA_LAN_KHAM:id, TEN_BENH_NHAN: name, TONG_TIEN: totalPrice, NGAY_KHAM: dentalVisitDate, TRANG_THAI: status },
   
   // schedule,
   selected,
@@ -26,9 +27,10 @@ export const Bill = ({
         />
         <p className="w-[15%] text-center">{id}</p>
         <p className="w-1/3 text-left">{name}</p>
-        <p className="w-1/5 text-center">{dentalVisitDate}</p>
+        <p className="w-1/5 text-center">{formatDate(dentalVisitDate)}</p>
+        <p className="w-1/5 text-center">{totalPrice ? totalPrice : 0}</p>
         <p className={"w-1/5 text-center " + statusColor}>{status === true ? "Đã thanh toán" : "Chưa thanh toán"}</p>
-        <p onClick={(e)=>e.stopPropagation()} className="text-center text-2xl text-green-500"><Link to={`/employee/bills/${id[id.length - 1]}`}>➜</Link></p>
+        <p onClick={(e)=>e.stopPropagation()} className="text-center text-2xl text-green-500"><Link to={`/employee/bills/${id}`}>➜</Link></p>
         {/* <p className="w-1/6 text-center">{expDay}</p>
         <p className="w-[10%] text-center">{inventoryQuantity}</p> */}
       </div>

@@ -3,7 +3,6 @@ import { ItemSide } from "../common/ItemSide";
 
 // import { PatientBoard } from "./employee/patient/PatientBoard";
 import { ScheduleBoard } from "./employee/schedule/ScheduleBoard";
-import useProcessDialog from "../../hooks/useProcessDialog";
 import { sideDataMock } from "./mocks/sideData";
 import { BillBoard } from "./employee/bill/BillBoard";
 
@@ -28,19 +27,6 @@ export const Panel_employee = () => {
   useEffect(() => {
     setSideData(sideDataMock);
   }, [sideData]);
-
-  // handle dialog
-  const [openDialog, setOpenDialog] = useState(false);
-  const [diaLogName, setDialogName] = useState("");
-
-  const attr = useProcessDialog({
-    id: diaLogName,
-    title: diaLogName,
-    triggerValue: openDialog,
-    onClose: () => {
-      setOpenDialog(false);
-    },
-  });
 
   return (
     <Fragment>
@@ -92,36 +78,11 @@ export const Panel_employee = () => {
                 Table #1
               </p>
             </div>
-            <div>
-              <button
-                className="mr-8 h-8 w-20 rounded-md bg-sky-200 leading-8 text-sky-600"
-                onClick={() => {
-                  setOpenDialog(true);
-                  setDialogName("Thêm");
-                }}
-              >
-                + Thêm
-              </button>
-
-              <button
-                className="mr-8 h-8 w-20 rounded-md bg-sky-200 leading-8 text-sky-600"
-                onClick={() => {
-                  setOpenDialog(true);
-                  setDialogName("Xoá");
-                }}
-              >
-                - Xoá
-              </button>
-            </div>
           </div>
 
           <div className="main-content w-full px-10 py-5">
             {selectedTitle === "Tiếp nhận bệnh nhân" && (
-              <ScheduleBoard
-                setOpenDialog={setOpenDialog}
-                attr={attr}
-                diaLogName={diaLogName}
-              />
+              <ScheduleBoard />
             )}
 
             {selectedTitle === "Hoá đơn" && (

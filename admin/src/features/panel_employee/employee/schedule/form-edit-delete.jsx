@@ -10,7 +10,6 @@ export default function FormED({ editedSchedule, submitEdit }) {
 
   const [formValues, setFormValues] = useState(defaultFormValues);
   const [formState, setFormState] = useState(null);
-  const [valid, setValid] = useState(true);
 
   useLayoutEffect(() => {
     if (editedSchedule) {
@@ -24,13 +23,6 @@ export default function FormED({ editedSchedule, submitEdit }) {
       setFormValues(editedSchedule);
     };
   }, [editedSchedule]);
-
-  const checkValid = () => {
-    if (!formValues.name || !formValues.enrollDate || !formValues.appointmentDate) {
-      return false;
-    }
-    return true;
-  };
 
   const handleChange = (e) => {
     let { name, value } = e.target;
@@ -50,51 +42,11 @@ export default function FormED({ editedSchedule, submitEdit }) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          if (!checkValid()) {
-            setValid(false);
-            return;
-          } else setValid(true);
           submitEdit?.(formValues, formState);
           setFormValues(defaultFormValues);
         }}
         className="min-w-[300px]"
       >
-        <div className="form-group">
-          <label htmlFor="name">Họ và tên</label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            disabled={formState !== "edit"}
-            className=" input-field"
-            value={formValues.name}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="enrollDate">Ngày đăng ký</label>
-          <input
-            id="enrollDate"
-            type="text"
-            name="enrollDate"
-            disabled={formState !== "edit"}
-            className=" input-field"
-            value={formValues.enrollDate}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="appointmentDate">Ngày hẹn</label>
-          <input
-            id="appointmentDate"
-            type="text"
-            name="appointmentDate"
-            disabled={formState !== "edit"}
-            className=" input-field"
-            value={formValues.appointmentDate}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
         <div className="form-group">
           <label htmlFor="status">Trạng thái</label>
           <select onChange={handleChange} name="status" value={formValues.status} disabled={formState !== "edit"}>
@@ -102,10 +54,6 @@ export default function FormED({ editedSchedule, submitEdit }) {
             <option value="true">Đã duyệt</option>
           </select>
         </div>
-        
-        {!valid && (
-          <p className="text-red-500">Vui lòng điền đầy đủ thông tin</p>
-        )}
         {/* Button */}
         <div className="inline-flex w-full flex-row justify-end pt-4">
           {formState === null && (
