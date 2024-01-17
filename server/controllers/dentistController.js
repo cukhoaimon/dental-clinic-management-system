@@ -1,7 +1,7 @@
 const pool = require("../utils/db");
 
 module.exports = {
-  KeDonThuoc: async (req, res) => {
+  prescribeMedication: async (req, res) => {
     try {
       await pool.connect();
 
@@ -100,5 +100,62 @@ module.exports = {
         message: err.message,
       });
     }
-  } 
+  },
+  getAllMedicines: async (req, res) => {
+    try {
+      await pool.connect();
+
+      const result = await pool.query(`SELECT * FROM THUOC`);
+
+      res.status(200).json({
+        status: "success",
+        data: result.recordset,
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+  },
+  getMedicalExamination: async (req, res) => {
+    try {
+      await pool.connect();
+
+      const medicalExamination = await pool.query(
+        `SELECT * FROM LAN_KHAM WHERE MA_LAN_KHAM = '${req.params.id}'`
+      );
+
+      const patient = await pool.query(
+        `SELECT * FROM NGUOI_DUNG WHERE SDT = '${medicalExamination.recordset[0].BENH_NHAN}'`
+      );
+
+      const patientRecords = await pool
+      .request()
+      .input("SDT", patient.recordset[0].SDT)
+      .output("message")
+      .execute(`sp_XemHoSoBenhNhan`);
+
+      console.log(patientRecords.recordset);
+
+      const patientRecord = patientRecords.recordset.find((record) => {
+        return record.MA_LAN_KHAM === parseInt(req.params.id);
+      });
+
+      res.status(200).json({
+        status: "success",
+        data: {
+          medicalExamination: medicalExamination.recordset[0],
+          patient: patient.recordset[0],
+          patientRecord: patientRecord,
+        },
+        message: "Success",
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+  }
 };

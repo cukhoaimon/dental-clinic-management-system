@@ -14,6 +14,7 @@ import { Panel_dentist } from "./features/panel_dentist/Panel_dentist";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
 import Bill from "./features/bill_page/Bill";
+import MedicalExamination from "./features/medical_examination/MedicalExamination";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,10 +43,13 @@ function App() {
 
           <Route path="/" element={<Home />}>
             <Route path="admin" element={<Panel />} />
-            <Route path="dentist" element={<Panel_dentist />} />
+            <Route path="dentist">
+              <Route path="examinations/:id" element={<MedicalExamination />} />
+              <Route index element={<Panel_dentist />} />
+            </Route>
             <Route path="employee">
-              <Route index element={<Panel_employee />} />
               <Route path="bills/:id" element={<Bill />} />
+              <Route index element={<Panel_employee />} />
             </Route>
           </Route>
           <Route path="/login" element={<Login />} />

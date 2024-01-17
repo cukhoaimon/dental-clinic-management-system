@@ -25,7 +25,7 @@ export const Patient = ({
           name="all"
         />
         <p className="w-[15%] text-center">{index}</p>
-        <p className="w-1/5 text-left">BS. {name}</p>
+        <p className="w-1/5 text-left">{name}</p>
         <p className="w-1/8 text-left">{formatDate(dob)}</p>
         <p className="w-1/6 text-center">{phone}</p>
         <p className="w-[30%] text-center">{address}</p>
