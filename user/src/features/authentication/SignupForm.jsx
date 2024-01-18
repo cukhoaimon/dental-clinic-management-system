@@ -1,18 +1,16 @@
-/* import { useForm } from "react-hook-form"; */
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 function SignupForm() {
-  /* const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data); */
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data) => console.log(data);
   // Todo
   return (
     <div>
       <div className=" mb-10 text-center text-[64px] font-medium leading-tight text-cyan-900">
         Đăng kí tài khoản
       </div>
-      <p className="text-center">
-        Vui lòng liên hệ nhân viên để đăng kí tài khoản
-      </p>
-      {/* <form
+
+      <form
         className="flex  flex-col items-center gap-6"
         onSubmit={handleSubmit(onSubmit)}
       >
@@ -61,7 +59,7 @@ function SignupForm() {
             Đăng kí
           </span>
         </button>
-      </form> */}
+      </form>
       <div className="mt-5 text-center">
         <Link
           to="/login"

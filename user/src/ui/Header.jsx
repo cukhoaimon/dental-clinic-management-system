@@ -12,6 +12,7 @@ function Header() {
         alignItems: "center",
         padding: "1rem",
         backgroundColor: "#f6fbf2",
+        gap: "1rem",
       }}
     >
       <img src="logo.png" width={72} />
