@@ -32,6 +32,7 @@ export default function Services({ title }) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor: "rgb(229, 229, 229)",
       }}
     >
       <Typography

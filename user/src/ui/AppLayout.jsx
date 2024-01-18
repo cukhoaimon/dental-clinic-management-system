@@ -29,10 +29,19 @@ export default function AppLayout() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
-      <NavBar />
-      <Outlet />
-      <Footer />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          backgroundColor: "rgb(229 229 229)",
+        }}
+      >
+        <Header />
+        <NavBar />
+        <Outlet />
+        <Footer />
+      </div>
     </ThemeProvider>
   );
 }

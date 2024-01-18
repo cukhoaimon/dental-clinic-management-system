@@ -9,6 +9,8 @@ export default function AboutUs() {
         alignItems: "center",
         justifyContent: "center",
         paddingX: 30,
+        flex: 1,
+        backgroundColor: "rgb(229, 229, 229)",
       }}
     >
       <Typography

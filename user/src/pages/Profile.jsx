@@ -1,7 +1,6 @@
 import { useState } from "react";
 import UpdateForm from "../features/userProfile/UpdateForm";
 import UserProfile from "../features/userProfile/UserProfile";
-import Footer from "../ui/Footer";
 import Header from "../ui/Header";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -27,8 +26,11 @@ function Profile() {
   };
 
   return (
-    <div className="container-2xl bg-neutral-200 ">
-      <div className="flex h-screen flex-col items-center justify-between">
+    <div
+      className="container-2xl flex flex-col bg-neutral-200 "
+      style={{ flex: 1 }}
+    >
+      <div className="flex flex-col items-center justify-between">
         <Header />
         <div className="font-['Lexend Deca'] m-4 self-start text-4xl font-normal text-black">
           Thông tin cá nhân
@@ -53,7 +55,6 @@ function Profile() {
             </DialogActions>
           </Dialog>
         </div>
-        <Footer />
       </div>
     </div>
   );
