@@ -1,4 +1,4 @@
-export default  function(dateStr){
+export default function(dateStr){
     let dateObj = new Date(dateStr);
     let day = String(dateObj.getDate()).padStart(2, '0'); // padStart để đảm bảo ngày luôn có 2 chữ số
     let month = String(dateObj.getMonth() + 1).padStart(2, '0'); // getMonth() trả về 0-11, nên cần cộng thêm 1

@@ -3,7 +3,8 @@ import { Outlet, useLocation, Navigate } from "react-router-dom";
 function Home() {
   // Get current location
   const location = useLocation();
-  const regexPattern = /^\/employee\/bills\/\d+$/;
+  const regexBillPattern = /^\/employee\/bills\/\d+$/;
+  const regexMedicalExaminationPattern = /^\/dentist\/examinations\/\d+$/;
 
   // TODO: handle role here
   const role = localStorage.getItem("role");
@@ -15,9 +16,10 @@ function Home() {
     <>
       <Outlet />
       {role === "QUAN_TRI_VIEN" && <Navigate to="/admin" />}
-      {role === "NHA_SI" && <Navigate to="/dentist" />}
-      {role === "NHAN_VIEN" && regexPattern.test(location.pathname) && <Navigate to={location.pathname} />}
-      {role === "NHAN_VIEN" && <Navigate to="/employee" />}
+      {role === "NHA_SI" && regexMedicalExaminationPattern.test(location.pathname) && <Navigate to={location.pathname} />}
+      {role === "NHA_SI" && !regexMedicalExaminationPattern.test(location.pathname) && <Navigate to="/dentist" />}
+      {role === "NHAN_VIEN" && regexBillPattern.test(location.pathname) && <Navigate to={location.pathname} />}
+      {role === "NHAN_VIEN" && !regexBillPattern.test(location.pathname) && <Navigate to="/employee" />}
     </>
   );
 }

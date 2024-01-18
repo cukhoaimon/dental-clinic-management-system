@@ -27,5 +27,6 @@ app.use('/users', require('./routes/userRoutes'));
 app.use('/admin', require('./routes/adminRoutes'));
 app.use('/dentists', require('./routes/dentistRoutes'));
 app.use('/employees', require('./routes/employeeRoutes'));
+app.use('/bill', require('./routes/billRoutes'));
 
 module.exports = app;

@@ -1,15 +1,15 @@
-import { patientRecordsMock } from "../../mocks/records"
+/* eslint-disable react/prop-types */
+import formatDate from "../../../../utils/formatDate"
+import { Link } from "react-router-dom"
 
-const PatientRecord = () => {
+const PatientRecord = ({patientRecords}) => {
   return (
     <div>
-      <div>
-        <p className="font-bold text-2xl text-blue-400">Họ và tên: Cristiano Ronaldo</p>
-      </div>
       <div className="overflow-y-scroll flex flex-col max-h-[500px]">
         <table className="table-auto w-full mt-5">
           <thead className="text-white bg-blue-600">
             <tr>
+              <th className="border px-4 py-2">Chỉnh sửa</th>
               <th className="border px-4 py-2">Mã Lần Khám</th>
               <th className="border px-4 py-2">Ngày khám</th>
               <th className="border px-4 py-2">Nha sĩ thực hiện</th>
@@ -18,24 +18,29 @@ const PatientRecord = () => {
             </tr>
           </thead>
           <tbody>
-            {patientRecordsMock.map((record, index) => {
+            {patientRecords && patientRecords.map((record, index) => {
               const bgColor = index % 2 !== 0 ? 'bg-blue-50' : 'bg-white'
-              const services = record.services.map((service) => service.name).join(', ')
+              const services = JSON.parse(record.DICH_VU).map((service) => service.TEN_DICH_VU).join(', ')
 
               return (
-              <tr key={record.id} className={bgColor}>
-                <td className="border px-4 py-2">{record.id}</td>
-                <td className="border px-4 py-2">{record.dentalVisitDate}</td>
-                <td className="border px-4 py-2">{record.dentist.name}</td>
+              <tr key={record.MA_LAN_KHAM} className={bgColor}>
+                <td className="border px-4 py-2 text-center">
+                  <Link to={`/dentist/examinations/${record.MA_LAN_KHAM}`}>
+                    &#9998;
+                  </Link>
+                </td>
+                <td className="border px-4 py-2 text-center">{record.MA_LAN_KHAM}</td>
+                <td className="border px-4 py-2">{formatDate(record.NGAY_KHAM)}</td>
+                <td className="border px-4 py-2">{record.NHA_SI_THUC_HIEN}</td>
                 <td className="border px-4 py-2">
                   {services}
                 </td>
                 <td className="border px-4 py-2">
-                  {record.medicines.map((medicine) => {
+                  {JSON.parse(record.THUOC).map((medicine, index) => {
                     return (
-                      <div className="grid grid-cols-2 gap-x-4" key={medicine.id}>
-                        <span>{medicine.name}</span>
-                        <span className="text-center">{medicine.quantity}</span>
+                      <div className="grid grid-cols-2 gap-x-4" key={index}>
+                        <span>{medicine.TEN_THUOC}</span>
+                        <span className="text-center">{medicine.SO_LUONG}</span>
                       </div>
                     )
                   })}

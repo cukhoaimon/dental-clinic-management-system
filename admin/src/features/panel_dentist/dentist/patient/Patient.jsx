@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
+import formatDate from "../../../../utils/formatDate";
+
 export const Patient = ({
-  patient: { name, dob, phone, address },
+  patient: { HO_TEN: name, NGAY_SINH: dob, SDT: phone, DIA_CHI: address },
   index,
   // patient,
   selected,
@@ -23,11 +25,11 @@ export const Patient = ({
           name="all"
         />
         <p className="w-[15%] text-center">{index}</p>
-        <p className="w-1/5 text-left">BS. {name}</p>
-        <p className="w-1/8 text-left">{dob}</p>
+        <p className="w-1/5 text-left">{name}</p>
+        <p className="w-1/8 text-left">{formatDate(dob)}</p>
         <p className="w-1/6 text-center">{phone}</p>
         <p className="w-[30%] text-center">{address}</p>
-        <p onClick={(e)=>{e.stopPropagation(); handlePopUpPatientRecords()}} className="cursor-pointer text-center text-2xl text-green-500">➜</p>
+        <p onClick={(e)=>{e.stopPropagation(); handlePopUpPatientRecords(phone)}} className="cursor-pointer text-center text-2xl text-green-500">➜</p>
         {/* <p className="w-1/6 text-center">{expDay}</p>
         <p className="w-[10%] text-center">{inventoryQuantity}</p> */}
       </div>

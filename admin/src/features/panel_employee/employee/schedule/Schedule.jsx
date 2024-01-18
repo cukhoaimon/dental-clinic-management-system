@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
+import formatDate from "../../../../utils/formatDate";
+
 export const Schedule = ({
-  schedule: { id, name, enrollDate, appointmentDate, status },
+  schedule: { MA_LICH_HEN: id, TEN_BENH_NHAN: name, NGAY_DANG_KI: enrollDate, NGAY_HEN: appointmentDate, TRANG_THAI: status },
   
   // schedule,
   selected,
@@ -24,8 +26,8 @@ export const Schedule = ({
         />
         <p className="w-[15%] text-center">{id}</p>
         <p className="w-1/3 text-left">{name}</p>
-        <p className="w-1/5 text-center">{enrollDate}</p>
-        <p className="w-1/5 text-center">{appointmentDate}</p>
+        <p className="w-1/5 text-center">{formatDate(enrollDate)}</p>
+        <p className="w-1/5 text-center">{formatDate(appointmentDate)}</p>
         <p className={"text-center " + statusColor}>{status ? "Đã duyệt" : "Chưa duyệt"}</p>
         {/* <p className="w-1/6 text-center">{expDay}</p>
         <p className="w-[10%] text-center">{inventoryQuantity}</p> */}

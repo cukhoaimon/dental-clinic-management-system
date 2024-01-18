@@ -12,9 +12,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 function Profile() {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({
-    name: "Me may beoooooooooooo",
+    name: "Nguyễn Văn Bé",
     dob: "01/01/1997",
-    address: "co me may beo ayyyyyyyy",
+    address: "78 Đường số 2, P. Bình Trị Đông B, Q. Bình Tân, TP. HCM",
     phone: "0123456789",
   });
 

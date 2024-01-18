@@ -18,6 +18,7 @@ function LoginForm() {
     if (res.status === 'success') {
       toast.success('Đăng nhập thành công');
       localStorage.setItem('role', res.role);
+      localStorage.setItem('phone', res.phone);
       setIsLogged(true);
     } else {
       toast.error('Đăng nhập thất bại');

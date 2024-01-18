@@ -1,10 +1,11 @@
 import { Fragment, useState, useMemo, useEffect } from "react";
 import { Bill } from "./Bill";
 import { Pagination } from "../../../common/Pagination";
-import {billsMock, BILLS_PER_PAGE } from "../../mocks/bills";
+import { BILLS_PER_PAGE } from "../../mocks/bills";
 import FormED from "./form-edit-delete";
 import Dialog from "../../../common/Dialog";
 import useProcessDialog from "../../../../hooks/useProcessDialog";
+import { getAllRecords } from "../../../../services/apiEmployee";
 
 /* eslint-disable react/prop-types */
 export const BillBoard = () => {
@@ -42,9 +43,14 @@ export const BillBoard = () => {
 
   // load data
   useEffect(() => {
-    setSchedules(isLoaded ? schedules : billsMock);
+    async function fetchSchedules() {
+      const res = await getAllRecords();
+      setSchedules(isLoaded ? schedules : res.data);
     setIsLoaded(true);
-  }, [schedules, isLoaded]);
+    }
+
+    fetchSchedules();
+  }, []);
 
 
 
@@ -116,10 +122,11 @@ export const BillBoard = () => {
           id="all"
         />
         <p className="w-[15%] text-center">Mã lần khám</p>
-        <p className="w-1/3 text-left">Bệnh nhân</p>
-        <p className="w-1/5 text-center">Ngày khám</p>
+        <p className="w-1/5 text-left">Bệnh nhân</p>
+        <p className="w-1/8 text-center">Ngày khám</p>
+        <p className="w-1/5 text-center">Tổng tiền</p>
         <p className="w-1/5 text-center">Trạng thái</p>
-        <p className="text-center"></p>
+        <p className="text-center">Hành động</p>
       </div>
 
       <div className="h table w-full overflow-y-auto">
