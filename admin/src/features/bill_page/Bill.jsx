@@ -14,22 +14,23 @@ const Bill = () => {
     const fetchBill = async () => {
       const res = await getBill(id).then((res) => res.bill);
       if (res.lankham.TRANG_THAI) {
-        const storedBill = JSON.parse(localStorage.getItem("bill"));
+        const storedBill = JSON.parse(localStorage.getItem(`bill${id}`));
         setBill(storedBill);
       } else {
         setLoading(true);
         const res1 = await createBill(id).then((res) => {
           setLoading(false);
-          localStorage.setItem("bill", JSON.stringify(res));
+
           return res;
         });
+        localStorage.setItem(`bill${id}`, JSON.stringify(res1.bill));
         setBill(res1.bill);
       }
       console.log(res);
     };
 
     fetchBill();
-  }, []);
+  }, [id]);
 
   return (
     <div className="px-40 py-10">
@@ -147,7 +148,7 @@ const Bill = () => {
                   )}
                 </span>
                 <span className="py-2 text-2xl font-bold text-green-600">
-                  {bill1.lankham?.TONG_TIEN}
+                  {bill1.lankham && bill1.lankham.TONG_TIEN}
                 </span>
               </div>
             </div>

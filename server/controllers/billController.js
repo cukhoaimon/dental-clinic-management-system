@@ -52,6 +52,11 @@ module.exports = {
       var medicines = [];
       var services = [];
       var lankham = {};
+      lankham = await pool
+        .query(`SELECT * FROM LAN_KHAM WHERE MA_LAN_KHAM = '${id}'`)
+        .then((result) => {
+          return result.recordset[0];
+        });
 
       const result = await pool
         .request()
@@ -62,7 +67,10 @@ module.exports = {
       if (result.output.message == "Thành công") {
         medicines = result.recordsets[0];
         services = result.recordsets[1];
-        lankham = result.recordsets[2][0];
+        lankham = {
+          ...lankham,
+          TONG_TIEN: result.recordsets[2][0]["Tổng tiền"],
+        };
       }
 
       res.status(200).json({
