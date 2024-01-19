@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { getBill, createBill } from "../../services/apiBill";
 // import { bill } from "./mocks/bills"
@@ -11,15 +11,16 @@ const Bill = () => {
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
   useEffect(() => {
-    
     const fetchBill = async () => {
       const res = await getBill(id).then((res) => res.bill);
       if (res.lankham.TRANG_THAI) {
-        setBill(res);
+        const storedBill = JSON.parse(localStorage.getItem("bill"));
+        setBill(storedBill);
       } else {
         setLoading(true);
         const res1 = await createBill(id).then((res) => {
           setLoading(false);
+          localStorage.setItem("bill", JSON.stringify(res));
           return res;
         });
         setBill(res1.bill);
@@ -44,6 +45,12 @@ const Bill = () => {
           Đây là hoá đơn thanh toán của bạn #
           <span className="text-green-400">{Date.now()}</span>.
         </p>
+        <Link
+          to="/employee"
+          className=" rounded-sm bg-green-600 p-2 text-center text-2xl font-bold uppercase text-white"
+        >
+          Trở về
+        </Link>
       </div>
       <div className="grid grid-cols-3">
         <div className="flex flex-col">
