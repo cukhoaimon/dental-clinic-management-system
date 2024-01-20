@@ -3,9 +3,15 @@
 import { useState, useEffect } from "react";
 import { getAllMedicines } from "../../services/apiDentist";
 import { getAllServices } from "../../services/apiService";
+import { recordExamination } from "../../services/apiDentist";
 import toast from "react-hot-toast";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 const MedicalExamination = () => {
+  const [customer, setCustomer] = useState("");
+
+  const [date, setDate] = useState("");
+
   const [medicines, setMedicines] = useState([]);
 
   const [currentMedicines, setCurrentMedicines] = useState([]);
@@ -17,6 +23,10 @@ const MedicalExamination = () => {
   const [currentServices, setCurrentServices] = useState([]);
 
   const [newServices, setNewServices] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
+  
 
   const handleAddMedicine = () => {
     // check if there is any medicine not selected
@@ -102,15 +112,49 @@ const MedicalExamination = () => {
     }
 
     // Anh Khang sửa ở đây
+    const formValue = {
+      customer,
+      examinationDate: date,
+      dentist: localStorage.getItem("phone"),
+      medicines: newMedicines,
+      services: newServices,
+    }
+    console.log(formValue);
+    
+    
+      setLoading(true);
+      await recordExamination(formValue)
+        .then((res) => {
+          if (res.message === "Thành công") {
+            toast.success("Thêm thành công");
+          } else {
+            toast.error(res.message);
+          }
+  
+          // console.log('res',res);
+        })
+        .catch((err) => {
+          console.log("err", err);
+          toast.error("Thêm thất bại");
+        })
+        .finally(() => setLoading(false));  
+  
+
 
     ///
-    toast.success("Lưu thành công");
+    // toast.success("Lưu thành công");
 
-    setTimeout(window.location.reload(), 4000);
+    // setTimeout(window.location.reload(), 4000);
   };
 
   return (
     <div className="px-40 py-10">
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className="mb-10 text-5xl font-bold uppercase">
         <p className="text-blue-300">Ghi nhận lần khám</p>
       </div>
@@ -122,6 +166,8 @@ const MedicalExamination = () => {
             <input
               type="text"
               id="sdt"
+              value={customer}
+              onChange={(e) => { setCustomer(e.target.value)}}
               className="ml-2 rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm"
               placeholder="Số điện thoại"
               required
@@ -132,9 +178,11 @@ const MedicalExamination = () => {
           <span className="font-bold text-blue-400">Nha sĩ thực hiện</span>
         </div>
         <div className="flex flex-col">
-          <span className="font-bold text-blue-400">Ngày khám</span>
+          <span className="font-bold text-blue-400">Ngày khám (dd/mm/yyyy)</span>
           <input
-            type="date"
+            type="text"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
             className="w-1/2 rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm"
           ></input>
         </div>

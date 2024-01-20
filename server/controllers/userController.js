@@ -86,12 +86,12 @@ module.exports = {
       const medicinesTable = new sql.Table();
 
       servicesTable.columns.add("MaDichVu", sql.Int);
-      services.forEach((service) => servicesTable.rows.add(service));
+      services.forEach((service) => servicesTable.rows.add(service.MA_DICH_VU));
 
       medicinesTable.columns.add("MaThuoc", sql.Int);
       medicinesTable.columns.add("SoLuong", sql.Int);
       medicines.forEach((medicine) =>
-        medicinesTable.rows.add(medicine.id, medicine.quantity)
+        medicinesTable.rows.add(medicine.MA_THUOC, medicine.quantity)
       );
 
       const result = await pool

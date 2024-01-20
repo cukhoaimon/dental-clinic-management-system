@@ -63,3 +63,12 @@ export const prescribeMedicationWait = async (data) => {
         return err.response;
     }
 }
+
+export const recordExamination = async (data) => {
+    try {
+        const res = await axiosClient.post("users/1/medical-record", data);
+        return res;
+    } catch (err) {
+        return err.response;
+    }
+}
