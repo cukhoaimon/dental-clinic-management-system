@@ -1,5 +1,5 @@
 const pool = require("../utils/db");
-
+const sql = require('mssql');
 module.exports = {
   getProfile: async (req, res) => {
     try {
@@ -72,12 +72,16 @@ module.exports = {
 
   recordExamination: async (req, res) => {
     // Ghi nhận lần khám
+    console.log(req.body)
     try {
       await pool.connect();
 
       const { customer, examinationDate, dentist, services, medicines } =
         req.body;
 
+      const [day, month, year] = examinationDate.split("/");
+      const formattedDate = `${year}-${month}-${day}`;
+      
       const servicesTable = new sql.Table();
       const medicinesTable = new sql.Table();
 
@@ -93,12 +97,12 @@ module.exports = {
       const result = await pool
         .request()
         .input("SDT", customer)
-        .input("NgayKham", examinationDate)
+        .input("NgayKham", formattedDate)
         .input("NguoiThucHien", dentist)
         .input("DanhSachDichVu", servicesTable)
         .input("DanhSachThuoc", medicinesTable)
         .output("message")
-        .execute(`GhiNhanLanKham`);
+        .execute(`sp_GhiNhanLanKham`);
 
       res.status(200).json({
         status: "success",
