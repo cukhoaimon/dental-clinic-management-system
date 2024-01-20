@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { ItemSide } from "../common/ItemSide";
+import { Link } from "react-router-dom";
 
 import { PatientBoard } from "./dentist/patient/PatientBoard";
 import { ScheduleBoard } from "./dentist/schedule/ScheduleBoard";
@@ -53,7 +54,7 @@ export const Panel_dentist = () => {
       <div className="main-container flex">
         <div className="side w-1/4 pt-10">
           <div className="title mx-8 mb-10">
-            <p className="py-2 rounded-2xl bg-sky-300 text-center text-3xl font-bold leading-[64px] text-sky-600 shadow-lg">
+            <p className="rounded-2xl bg-sky-300 py-2 text-center text-3xl font-bold leading-[64px] text-sky-600 shadow-lg">
               {selectedTitle}
             </p>
           </div>
@@ -77,18 +78,15 @@ export const Panel_dentist = () => {
                 Table #1
               </p>
             </div>
+            <button className="h-8 w-60 rounded-lg bg-sky-300 font-bold text-sky-600">
+              <Link to={`/dentist/examinations/add`}>Thêm hồ sơ bệnh nhân</Link>
+            </button>
           </div>
 
           <div className="main-content w-full px-10 py-5">
-            {selectedTitle === "Lịch hẹn" && (
-              <ScheduleBoard
-              />
-            )}
+            {selectedTitle === "Lịch hẹn" && <ScheduleBoard />}
 
-            {selectedTitle === "Hồ sơ bệnh nhân" && (
-              <PatientBoard
-              />
-            )}
+            {selectedTitle === "Hồ sơ bệnh nhân" && <PatientBoard />}
           </div>
         </div>
       </div>

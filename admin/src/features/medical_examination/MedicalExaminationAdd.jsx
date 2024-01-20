@@ -1,12 +1,8 @@
+// add a new medical examination
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useEffect } from "react";
-import {
-  getAllMedicines,
-  getMedicalExamination,
-  prescribeMedication,
-  prescribeMedicationWait,
-} from "../../services/apiDentist";
-import formatDate from "../../utils/formatDate";
+import { getAllMedicines } from "../../services/apiDentist";
+import { getAllServices } from "../../services/apiService";
 import toast from "react-hot-toast";
 
 const MedicalExamination = () => {
@@ -16,7 +12,11 @@ const MedicalExamination = () => {
 
   const [newMedicines, setNewMedicines] = useState([]);
 
-  const [data, setData] = useState(null);
+  const [services, setServices] = useState([]);
+
+  const [currentServices, setCurrentServices] = useState([]);
+
+  const [newServices, setNewServices] = useState([]);
 
   const handleAddMedicine = () => {
     // check if there is any medicine not selected
@@ -35,6 +35,26 @@ const MedicalExamination = () => {
         {
           MA_THUOC: undefined,
           quantity: 0,
+        },
+      ];
+    });
+  };
+
+  const handleAddService = () => {
+    const isExist = newServices.find(
+      (service) => service.MA_DICH_VU === undefined,
+    );
+
+    if (isExist) {
+      toast.error("Vui lòng chọn dịch vụ trước khi thêm mới");
+      return;
+    }
+
+    setNewServices((prev) => {
+      return [
+        ...prev,
+        {
+          MA_DICH_VU: undefined,
         },
       ];
     });
@@ -68,16 +88,9 @@ const MedicalExamination = () => {
       let res = await getAllMedicines();
       setMedicines(res.data);
 
-      // get current medicines
-      const id = window.location.pathname.split("/")[3];
-
-      res = await getMedicalExamination(id);
-      const { data } = res;
-      setData(data);
-
-      // get current medicines
-      const currentMedicines = JSON.parse(data.patientRecord.THUOC);
-      setCurrentMedicines(currentMedicines);
+      // get all services
+      let services = await getAllServices();
+      setServices(services.data);
     };
 
     fetchData();
@@ -88,38 +101,9 @@ const MedicalExamination = () => {
       return;
     }
 
-    const id = window.location.pathname.split("/")[3];
-    const promiseArr = newMedicines.map((medicine) => {
-      return prescribeMedication({
-        ma_lk: id,
-        ma_thuoc: medicine.MA_THUOC,
-        so_luong: medicine.quantity,
-      });
-    });
+    // Anh Khang sửa ở đây
 
-    await Promise.all(promiseArr);
-
-    toast.success("Lưu thành công");
-
-    setTimeout(window.location.reload(), 4000);
-  };
-
-  const handleSaveWait = async () => {
-    if (!handleCheckValidNewMedicines()) {
-      return;
-    }
-
-    const id = window.location.pathname.split("/")[3];
-    const promiseArr = newMedicines.map((medicine) => {
-      return prescribeMedicationWait({
-        ma_lk: id,
-        ma_thuoc: medicine.MA_THUOC,
-        so_luong: medicine.quantity,
-      });
-    });
-
-    await Promise.all(promiseArr);
-
+    ///
     toast.success("Lưu thành công");
 
     setTimeout(window.location.reload(), 4000);
@@ -128,33 +112,35 @@ const MedicalExamination = () => {
   return (
     <div className="px-40 py-10">
       <div className="mb-10 text-5xl font-bold uppercase">
-        <p className="text-blue-300">Chỉnh sửa lần khám</p>
+        <p className="text-blue-300">Ghi nhận lần khám</p>
       </div>
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-3 ">
         <div className="flex flex-col">
           <span className="font-bold text-blue-400">Bệnh nhân</span>
-          <span className="font-bold">{`Họ và tên: ${
-            data && data.patient.HO_TEN
-          }`}</span>
-          <span>{`Số điện thoại: ${data && data.patient.SDT}`}</span>
-          <span>{`Địa chỉ: ${data && data.patient.DIA_CHI}`}</span>
+          <span>
+            Số điện thoại:
+            <input
+              type="text"
+              id="sdt"
+              className="ml-2 rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm"
+              placeholder="Số điện thoại"
+              required
+            ></input>
+          </span>
         </div>
         <div className="flex flex-col">
           <span className="font-bold text-blue-400">Nha sĩ thực hiện</span>
-          <span className="font-bold">{`Họ và tên: ${
-            data && data.patientRecord.NHA_SI_THUC_HIEN
-          }`}</span>
         </div>
         <div className="flex flex-col">
-          <span className="font-bold text-blue-400">Khám bệnh</span>
-          <span className="font-bold">{`Mã lần khám: ${
-            data && data.patientRecord.MA_LAN_KHAM
-          }`}</span>
-          <span>{`Ngày khám: ${
-            data && formatDate(data.patientRecord.NGAY_KHAM)
-          }`}</span>
+          <span className="font-bold text-blue-400">Ngày khám</span>
+          <input
+            type="date"
+            className="w-1/2 rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm"
+          ></input>
         </div>
       </div>
+
+      {/*Medicines */}
       <div className="mt-10">
         <span className="text-3xl font-bold text-blue-400">Thuốc</span>
         <table className="mt-5 w-full table-auto">
@@ -279,6 +265,105 @@ const MedicalExamination = () => {
         </button>
       </div>
 
+      {/* Services */}
+      <div className="mt-10">
+        <span className="text-3xl font-bold text-blue-400">Dịch vụ</span>
+        <table className="mt-5 w-full table-auto">
+          <thead>
+            <tr className="bg-blue-500 text-white">
+              <th className="border px-4 py-2">Tên dịch vụ</th>
+              <th className="border px-4 py-2">Đơn giá</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentServices.map((service) => {
+              const serviceData = services.find(
+                (item) => item.MA_DICH_VU === service.MA_DICH_VU,
+              );
+              return (
+                <tr className="h-[40px]" key={service.MA_DICH_VU}>
+                  <td className="border px-4 py-2">
+                    {serviceData.TEN_DICH_VU}
+                  </td>
+                  <td className="border px-4 py-2 text-center">
+                    {serviceData.GIA}
+                  </td>
+                </tr>
+              );
+            })}
+            {newServices.map((service, index) => {
+              // find service in data
+              let serviceData = services.find(
+                (item) => item.MA_DICH_VU === service.MA_DICH_VU,
+              );
+              return (
+                <tr
+                  className="h-[40px]"
+                  key={service.MA_DICH_VU ? service.MA_DICH_VU : index}
+                >
+                  <td className="border px-4 py-2">
+                    <select
+                      className="z-10 w-full"
+                      value={service.MA_DICH_VU}
+                      onChange={(e) => {
+                        const MA_DICH_VU = e.target.value;
+                        setNewServices((prev) => {
+                          return prev.map((item) => {
+                            if (item.MA_DICH_VU === service.MA_DICH_VU) {
+                              return {
+                                ...item,
+                                MA_DICH_VU: parseInt(MA_DICH_VU),
+                              };
+                            }
+                            return item;
+                          });
+                        });
+                      }}
+                    >
+                      {service.MA_DICH_VU === undefined ? (
+                        <option value={undefined}>Chọn dịch vụ</option>
+                      ) : (
+                        <option value={service.MA_DICH_VU}>
+                          {serviceData.TEN_DICH_VU}
+                        </option>
+                      )}
+                      {services.map((item) => {
+                        // check if service is exist in currentServices or newServices
+                        const isExist = currentServices
+                          .concat(newServices)
+                          .find(
+                            (service) => service.MA_DICH_VU === item.MA_DICH_VU,
+                          );
+                        if (isExist) return null;
+                        return (
+                          <option
+                            key={item?.MA_DICH_VU}
+                            value={item?.MA_DICH_VU}
+                          >
+                            {item?.TEN_DICH_VU}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </td>
+                  <td className="border px-4 py-2 text-center">
+                    {serviceData?.GIA}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
+        <button
+          onClick={handleAddService}
+          className="mt-5 h-10 w-full rounded-lg bg-blue-400 text-center font-bold text-white hover:bg-blue-500"
+        >
+          + Thêm dịch vụ
+        </button>
+      </div>
+
+      {/* Button */}
       <div className="mt-10 flex w-full justify-evenly">
         <button
           onClick={handleSave}
@@ -287,13 +372,7 @@ const MedicalExamination = () => {
         >
           Lưu
         </button>
-        <button
-          onClick={handleSaveWait}
-          type="button"
-          className="mb-2 me-2 w-32 rounded-lg bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
-        >
-          Lưu Chờ
-        </button>
+
         <button
           onClick={() => {
             window.location.reload();

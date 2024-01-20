@@ -8,13 +8,14 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 
 import { Panel_employee } from "./features/panel_employee/Panel_employee";
-import {Panel} from "./features/panel/Panel";
+import { Panel } from "./features/panel/Panel";
 import { Panel_dentist } from "./features/panel_dentist/Panel_dentist";
 
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
 import Bill from "./features/bill_page/Bill";
 import MedicalExamination from "./features/medical_examination/MedicalExamination";
+import MedicalExaminationAdd from "./features/medical_examination/MedicalExaminationAdd";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,7 +55,10 @@ function App() {
           </Route>
           <Route path="/login" element={<Login />} />
           {/* Another route add from here */}
-
+          <Route
+            path="dentist/examinations/add"
+            element={<MedicalExaminationAdd />}
+          />
           {/* All invalid route will render PageNotFound page */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
