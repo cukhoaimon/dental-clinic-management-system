@@ -5,7 +5,6 @@ const connectionOptions = {
   database: process.env.SQL_DATABASE,
   user: process.env.SQL_UID,
   password: process.env.SQL_PWD,
-  port: 1443,
   options: {
     encrypt: false,
     enableArithAbort: false,

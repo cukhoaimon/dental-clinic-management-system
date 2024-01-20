@@ -55,6 +55,7 @@ module.exports = {
         status: "success",
         message: output
       });
+      
     } catch (err) {
       res.status(500).json({
         status: "fail",
